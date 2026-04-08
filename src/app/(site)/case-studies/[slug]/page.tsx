@@ -17,7 +17,8 @@ export default async function CaseStudyPage({ params }: { params: { slug: string
   const cs = await prisma.caseStudy.findUnique({ where: { slug: params.slug } })
   if (!cs || cs.status !== 'published') notFound()
 
-  const layout = await resolveLayout('case-study', {
+  // CaseStudy has no templateId — only the per-record override can replace the React template.
+  const layout = await resolveLayout({
     useLayout: cs.useLayout,
     layoutHtml: cs.layoutHtml,
     layoutCss: cs.layoutCss,

@@ -2,11 +2,11 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Save, Eye, Globe, ArrowLeft, Layers, ExternalLink } from 'lucide-react'
+import { Save, Eye, Globe, ArrowLeft, Layers, ExternalLink, Code } from 'lucide-react'
 
 const LayoutEditor = dynamic(() => import('@/components/admin/LayoutEditor'), { ssr: false })
 
-interface ActiveTemplate {
+interface AssignedTemplate {
   id: number
   name: string
   pageType: string
@@ -15,11 +15,18 @@ interface ActiveTemplate {
   layoutJson: object | null
 }
 
+interface TemplateOption {
+  id: number
+  name: string
+  pageType: string
+}
+
 export default function PageEditor({
   page: initial,
-  activeTemplate,
+  assignedTemplate,
+  availableTemplates,
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}: { page: any; activeTemplate: ActiveTemplate | null }) {
+}: { page: any; assignedTemplate: AssignedTemplate | null; availableTemplates: TemplateOption[] }) {
   const [page, setPage] = useState(initial)
   const [tab, setTab] = useState<'content' | 'seo' | 'layout'>('content')
   const [saving, setSaving] = useState(false)
@@ -44,8 +51,8 @@ export default function PageEditor({
   }
 
   // When the user clicks "Override for this page only", we seed the GrapesJS editor
-  // with the active template's HTML so they have a starting point instead of a blank canvas.
-  const overrideSeedHtml = page.layoutHtml || activeTemplate?.layoutHtml || ''
+  // with the assigned template's HTML if any, otherwise blank.
+  const overrideSeedHtml = page.layoutHtml || assignedTemplate?.layoutHtml || ''
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
@@ -59,6 +66,7 @@ export default function PageEditor({
         <div className="flex items-center gap-2">
           <span className={`text-xs px-2 py-1 rounded font-semibold ${page.status === 'published' ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>{page.status}</span>
           {page.useLayout && <span className="text-xs px-2 py-1 rounded font-semibold bg-green-50 text-green-700">Custom layout</span>}
+          {assignedTemplate && !page.useLayout && <span className="text-xs px-2 py-1 rounded font-semibold bg-purple-50 text-purple-700">Template</span>}
         </div>
       </div>
 
@@ -108,42 +116,86 @@ export default function PageEditor({
 
       {tab === 'layout' && (
         <div className="space-y-4">
+          {/* What's rendering this page? */}
           <div className="bg-white border border-ink-200 rounded-2xl p-6">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-500 flex items-center justify-center shrink-0">
-                <Layers className="w-5 h-5" />
+                {page.useLayout ? <Code className="w-5 h-5" /> : (assignedTemplate ? <Layers className="w-5 h-5" /> : <Code className="w-5 h-5" />)}
               </div>
               <div className="flex-1">
-                <h2 className="font-heading text-lg font-bold text-ink-900 mb-1">Page layout</h2>
-                {activeTemplate ? (
+                <h2 className="font-heading text-lg font-bold text-ink-900 mb-1">Currently rendering</h2>
+                {page.useLayout ? (
+                  <p className="text-sm text-ink-600">
+                    This page is using a <strong className="text-ink-900">custom per-page layout override</strong>. See the override controls below.
+                  </p>
+                ) : assignedTemplate ? (
                   <>
                     <p className="text-sm text-ink-600 mb-3">
-                      This page renders using the <strong className="text-ink-900">{activeTemplate.name}</strong> template
-                      (page type: <code className="text-xs bg-ink-100 px-1.5 py-0.5 rounded">{activeTemplate.pageType}</code>).
+                      This page is rendering via the assigned <strong className="text-ink-900">{assignedTemplate.name}</strong> template
+                      (page type: <code className="text-xs bg-ink-100 px-1.5 py-0.5 rounded">{assignedTemplate.pageType}</code>).
                     </p>
-                    <Link href={`/admin/templates/${activeTemplate.id}`} className="inline-flex items-center gap-1 text-sm text-brand-500 font-bold hover:underline">
+                    <Link href={`/admin/templates/${assignedTemplate.id}`} className="inline-flex items-center gap-1 text-sm text-brand-500 font-bold hover:underline">
                       Edit this template <ExternalLink className="w-3 h-3" />
                     </Link>
                   </>
                 ) : (
-                  <p className="text-sm text-ink-600 mb-3">
-                    No published template for page type <code className="text-xs bg-ink-100 px-1.5 py-0.5 rounded">{page.pageType}</code>.
-                    Falling back to the built-in React component.
+                  <p className="text-sm text-ink-600">
+                    This page is rendering via the built-in <strong className="text-ink-900">React template component</strong> for page type <code className="text-xs bg-ink-100 px-1.5 py-0.5 rounded">{page.pageType}</code>.
                   </p>
                 )}
               </div>
             </div>
           </div>
 
+          {/* Template assignment dropdown */}
+          <div className="bg-white border border-ink-200 rounded-2xl p-6">
+            <h3 className="font-heading text-base font-bold text-ink-900 mb-1">Assign a custom template</h3>
+            <p className="text-sm text-ink-600 mb-4">
+              By default this page uses the React template. You can opt in to a custom GrapesJS template for this page only.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <select
+                value={page.templateId ?? ''}
+                onChange={e => {
+                  const val = e.target.value === '' ? null : parseInt(e.target.value)
+                  setPage({ ...page, templateId: val })
+                }}
+                className="px-4 py-2.5 border border-ink-200 rounded-lg text-sm flex-1 min-w-[260px]"
+              >
+                <option value="">— React template (default) —</option>
+                {availableTemplates.length === 0 ? (
+                  <option disabled>No published templates for {page.pageType}</option>
+                ) : (
+                  availableTemplates.map(t => (
+                    <option key={t.id} value={t.id}>{t.name}</option>
+                  ))
+                )}
+              </select>
+              <button
+                onClick={() => save()}
+                disabled={saving}
+                className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-full text-sm uppercase tracking-wide disabled:opacity-60"
+              >
+                {saving ? 'Saving...' : 'Save assignment'}
+              </button>
+            </div>
+            {availableTemplates.length === 0 && (
+              <p className="text-xs text-ink-500 mt-3">
+                Create a template for the <code>{page.pageType}</code> page type at <Link href="/admin/templates/new" className="text-brand-500 font-bold hover:underline">Templates → New</Link>, then publish it.
+              </p>
+            )}
+          </div>
+
+          {/* Per-page override */}
           {page.useLayout ? (
             <div className="bg-green-50 border border-green-200 text-green-800 rounded-2xl p-5 flex justify-between items-center">
               <div>
                 <p className="font-bold text-sm">Per-page override active</p>
-                <p className="text-xs text-green-700 mt-0.5">This page uses a custom layout that overrides the template above.</p>
+                <p className="text-xs text-green-700 mt-0.5">A custom GrapesJS layout overrides everything else for this specific page.</p>
               </div>
               <div className="flex gap-2">
                 <button onClick={() => setEditing(true)} className="text-xs font-bold text-green-800 underline">Edit override</button>
-                <button onClick={() => save({ useLayout: false })} className="text-xs font-bold text-green-800 underline">Revert to template</button>
+                <button onClick={() => save({ useLayout: false })} className="text-xs font-bold text-green-800 underline">Remove override</button>
               </div>
             </div>
           ) : (

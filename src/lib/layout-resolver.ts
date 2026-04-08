@@ -10,32 +10,45 @@ export interface ResolvedLayout {
 }
 
 /**
- * Resolves the layout HTML/CSS for a given pageType, applying priority:
- *   1. (caller-handled) per-record useLayout override — pass `override` here
- *   2. published PageTemplate matching pageType
- *   3. null → caller falls back to React template
+ * Resolves the layout HTML/CSS for a page record.
+ *
+ * Priority (new):
+ *   1. Per-record override (`useLayout && layoutHtml`)  → render that
+ *   2. Explicitly assigned PageTemplate (by templateId, must be published) → render that
+ *   3. null → caller falls back to its React template component (the default)
+ *
+ * Note: there is NO automatic match by pageType. A PageTemplate is only used
+ * when an editor has explicitly assigned it to a page via the admin.
  */
 export async function resolveLayout(
-  pageType: string,
-  override?: { useLayout: boolean; layoutHtml?: string | null; layoutCss?: string | null }
+  override?: { useLayout: boolean; layoutHtml?: string | null; layoutCss?: string | null },
+  templateId?: number | null,
 ): Promise<ResolvedLayout | null> {
   if (override?.useLayout && override.layoutHtml) {
     return { html: override.layoutHtml, css: override.layoutCss || '', source: 'override' }
   }
-  const template = await prisma.pageTemplate.findFirst({
-    where: { pageType, status: 'published' },
-    orderBy: { updatedAt: 'desc' },
-  })
-  if (template?.layoutHtml) {
-    return { html: template.layoutHtml, css: template.layoutCss || '', source: 'template' }
+
+  if (templateId) {
+    const template = await prisma.pageTemplate.findUnique({ where: { id: templateId } })
+    if (template && template.status === 'published' && template.layoutHtml) {
+      return { html: template.layoutHtml, css: template.layoutCss || '', source: 'template' }
+    }
   }
+
   return null
 }
 
-/** Returns the published template for a pageType (regardless of override). Used in admin info boxes. */
-export async function getActiveTemplate(pageType: string) {
-  return prisma.pageTemplate.findFirst({
+/** Returns the explicitly-assigned PageTemplate for a page, regardless of publish status. */
+export async function getAssignedTemplate(templateId?: number | null) {
+  if (!templateId) return null
+  return prisma.pageTemplate.findUnique({ where: { id: templateId } })
+}
+
+/** Lists published PageTemplates for a given pageType — used by the admin template-picker dropdown. */
+export async function listPublishedTemplatesForType(pageType: string) {
+  return prisma.pageTemplate.findMany({
     where: { pageType, status: 'published' },
-    orderBy: { updatedAt: 'desc' },
+    orderBy: { name: 'asc' },
+    select: { id: true, name: true, pageType: true },
   })
 }

@@ -45,12 +45,11 @@ export default async function DynamicPage({ params }: Props) {
     schema = buildServiceSchema(page.service.name, page.metaDesc || '')
   }
 
-  // Layout priority: per-page override → published PageTemplate → React template
-  const layout = await resolveLayout(page.pageType, {
-    useLayout: page.useLayout,
-    layoutHtml: page.layoutHtml,
-    layoutCss: page.layoutCss,
-  })
+  // Layout priority: per-page override → assigned PageTemplate (by templateId) → React template
+  const layout = await resolveLayout(
+    { useLayout: page.useLayout, layoutHtml: page.layoutHtml, layoutCss: page.layoutCss },
+    page.templateId,
+  )
 
   if (layout) {
     return (

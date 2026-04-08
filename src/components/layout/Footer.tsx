@@ -1,70 +1,109 @@
 import Link from 'next/link'
-import Image from 'next/image'
+import type { CSSProperties } from 'react'
 
 const footerLinks = {
-  'CRO Services': [
-    { label: 'Conversion Rate Optimization', href: '/conversion-rate-optimization' },
-    { label: 'eCommerce CRO', href: '/conversion-rate-optimization/ecommerce' },
-    { label: 'Shopify CRO', href: '/conversion-rate-optimization/shopify' },
-    { label: 'Landing Page Optimization', href: '/conversion-rate-optimization/landing-page' },
-    { label: 'A/B Testing', href: '/conversion-rate-optimization/ab-testing' },
+  Services: [
+    { label: 'Digital Marketing', href: '/digital-marketing' },
+    { label: 'CRO', href: '/cro' },
+    { label: 'Marketplace Management', href: '/marketplaces' },
+    { label: 'Zoho Services', href: '/zoho' },
+    { label: 'Web Development', href: '/development' },
   ],
-  'Zoho Services': [
-    { label: 'Zoho CRM Implementation', href: '/zoho-services/zoho-crm-implementation' },
-    { label: 'Zoho One Consulting', href: '/zoho-services/zoho-one-consulting' },
-    { label: 'Zoho Marketing Automation', href: '/zoho-services/zoho-marketing-automation' },
-    { label: 'Zoho Commerce', href: '/zoho-services/zoho-commerce' },
-    { label: 'Zoho Integrations', href: '/zoho-services/zoho-integrations' },
-  ],
-  'Digital Marketing': [
-    { label: 'SEO Services', href: '/digital-marketing/seo' },
-    { label: 'Google Ads / PPC', href: '/digital-marketing/ppc-google-ads' },
-    { label: 'Social Media Marketing', href: '/digital-marketing/social-media-marketing' },
-    { label: 'Content Marketing', href: '/digital-marketing/content-marketing' },
-    { label: 'Email Marketing', href: '/digital-marketing/email-marketing' },
-  ],
-  'Company': [
-    { label: 'About', href: '/about' },
+  Company: [
+    { label: 'About Us', href: '/about' },
+    { label: 'Case Studies', href: '/case-studies' },
     { label: 'Blog', href: '/blog' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Privacy Policy', href: '/privacy' },
-    { label: 'Terms of Service', href: '/terms' },
+  ],
+  'Quick Links': [
+    { label: 'CRO Audit (Free)', href: '/contact' },
+    { label: 'Zoho Demo', href: '/contact' },
+    { label: 'Sitemap', href: '/sitemap.xml' },
   ],
 }
 
-export function Footer() {
+const gridStyle: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: 48,
+  marginBottom: 60,
+}
+
+export default function Footer() {
   return (
-    <footer className="bg-ink-900 text-ink-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-1">
-            <div className="bg-white inline-block rounded-md p-3 mb-4">
-              <Image
-                src="/brand/logo.png"
-                alt="ConversionPro LLP"
-                width={160}
-                height={40}
-                className="h-8 w-auto"
-              />
-            </div>
-            <p className="text-sm text-ink-400 leading-relaxed mb-4">
-              Data-driven CRO, Zoho consulting, and digital marketing agency helping Indian businesses convert more.
+    <footer style={{ background: '#062B3E', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
+      <div className="container-site">
+        <div style={gridStyle}>
+          {/* Brand col */}
+          <div style={{ minWidth: 0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/logo.png"
+              alt="ConversionPro LLP"
+              style={{ height: 40, width: 'auto', marginBottom: 20, filter: 'brightness(0) invert(1)' }}
+            />
+            <p style={{ fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.65)', marginBottom: 24, maxWidth: 280 }}>
+              Data-driven digital marketing, CRO and Zoho consulting for eCommerce brands across India.
             </p>
-            <p className="text-sm text-ink-500">Pune, Maharashtra, India</p>
-            <a href="mailto:hello@conversionprollp.com" className="text-sm text-brand-400 hover:text-brand-300 transition mt-1 block">
-              hello@conversionprollp.com
-            </a>
+            <div style={{ display: 'flex', gap: 12 }}>
+              {[
+                { label: 'LI', href: 'https://linkedin.com/company/conversionpro' },
+                { label: 'IG', href: 'https://instagram.com/conversionprollp' },
+              ].map(s => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    textDecoration: 'none',
+                    transition: 'background 0.35s ease',
+                  }}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([section, links]) => (
-            <div key={section}>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">{section}</h3>
-              <ul className="space-y-2">
+          {/* Link columns */}
+          {Object.entries(footerLinks).map(([heading, links]) => (
+            <div key={heading}>
+              <h4
+                style={{
+                  fontFamily: 'var(--font-inter), Inter, sans-serif',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  marginBottom: 20,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {heading}
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {links.map(link => (
-                  <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-ink-400 hover:text-brand-400 transition">
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      style={{
+                        fontSize: 14,
+                        color: 'rgba(255,255,255,0.65)',
+                        textDecoration: 'none',
+                        transition: 'color 0.3s ease',
+                      }}
+                    >
                       {link.label}
                     </Link>
                   </li>
@@ -74,12 +113,23 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-ink-800 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-ink-500">
+        {/* Bottom bar */}
+        <div
+          style={{
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+            paddingTop: 24,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: 12,
+          }}
+        >
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>
             © {new Date().getFullYear()} ConversionPro LLP. All rights reserved.
           </p>
-          <p className="text-xs text-ink-600">
-            CRO Agency Pune | Zoho Partner | Digital Marketing India
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>
+            Pune · Mumbai · Bangalore · Delhi · Hyderabad · Chennai
           </p>
         </div>
       </div>

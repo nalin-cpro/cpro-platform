@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Inter, Rubik } from "next/font/google";
 import "./globals.css";
 import { getSiteConfig } from "@/lib/site-config";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
+// Design system fonts: Inter for headings, Rubik for body
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const rubik = Rubik({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-rubik",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = await getSiteConfig();
@@ -33,7 +45,7 @@ export default async function RootLayout({
       <head>
         <style dangerouslySetInnerHTML={{ __html: brandCss }} />
       </head>
-      <body className={`${inter.variable} ${manrope.variable} font-sans antialiased bg-white text-ink-800`}>
+      <body className={`${inter.variable} ${rubik.variable}`}>
         {children}
       </body>
     </html>

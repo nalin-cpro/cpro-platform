@@ -17,7 +17,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const post = await prisma.blogPost.findUnique({ where: { slug: params.slug } })
   if (!post || post.status !== 'published') notFound()
 
-  const layout = await resolveLayout('blog', {
+  // BlogPost has no templateId — only the per-record override can replace the React template.
+  const layout = await resolveLayout({
     useLayout: post.useLayout,
     layoutHtml: post.layoutHtml,
     layoutCss: post.layoutCss,
