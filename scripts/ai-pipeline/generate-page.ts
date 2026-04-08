@@ -43,7 +43,7 @@ async function generateLocationPage(citySlug: string, serviceSlug: string) {
   const prompt    = locationPrompt(service.name, location.city, location.state, primaryKw)
 
   console.log('  Calling Claude API...')
-  const msg  = await anthropic.messages.create({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
+  const msg  = await anthropic.messages.create({ model: 'claude-sonnet-4-5', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
   const raw  = (msg.content[0] as { type: string; text: string }).text
   const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim())
 

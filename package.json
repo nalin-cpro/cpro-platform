@@ -10,15 +10,20 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.84.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "6.19.3",
+    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "dotenv": "^17.4.1",
+    "grapesjs": "^0.22.14",
+    "grapesjs-preset-webpage": "^1.0.3",
     "lucide-react": "^1.7.0",
     "next": "14.2.35",
     "next-auth": "^4.24.13",
     "prisma": "6.19.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },
@@ -26,6 +31,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.19.39",
     "@types/react": "^18",
     "@types/react-dom": "^18",

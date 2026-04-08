@@ -20,14 +20,16 @@ model Location {
 }
 
 model Service {
-  id         Int      @id @default(autoincrement())
-  name       String
-  slug       String   @unique
-  cluster    String
-  parentSlug String?
-  active     Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  pages      Page[]
+  id          Int         @id @default(autoincrement())
+  name        String
+  slug        String      @unique
+  cluster     String
+  parentSlug  String?
+  active      Boolean     @default(true)
+  sortOrder   Int         @default(0)
+  createdAt   DateTime    @default(now())
+  pages       Page[]
+  caseStudies CaseStudy[]
 }
 
 model Page {
@@ -41,9 +43,14 @@ model Page {
   canonical    String?
   ogTitle      String?
   ogDesc       String?
+  ogImage      String?
   primaryKw    String?
   secondaryKws String[]  @default([])
   bodyJson     Json?
+  layoutHtml   String?
+  layoutCss    String?
+  layoutJson   Json?
+  useLayout    Boolean   @default(false)
   serviceId    Int?
   service      Service?  @relation(fields: [serviceId], references: [id])
   locationId   Int?
@@ -55,21 +62,79 @@ model Page {
 }
 
 model BlogPost {
-  id           Int       @id @default(autoincrement())
-  slug         String    @unique
-  status       String    @default("draft")
-  title        String
-  metaDesc     String?
-  primaryKw    String?
-  secondaryKws String[]  @default([])
-  excerpt      String?
-  bodyMd       String?
-  category     String?
-  tags         String[]  @default([])
-  aiGenerated  Boolean   @default(false)
-  publishedAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id            Int       @id @default(autoincrement())
+  slug          String    @unique
+  status        String    @default("draft")
+  title         String
+  metaDesc      String?
+  primaryKw     String?
+  secondaryKws  String[]  @default([])
+  excerpt       String?
+  bodyMd        String?
+  layoutHtml    String?
+  layoutCss     String?
+  layoutJson    Json?
+  useLayout     Boolean   @default(false)
+  category      String?
+  tags          String[]  @default([])
+  featuredImage String?
+  authorName    String?
+  aiGenerated   Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model CaseStudy {
+  id                 Int       @id @default(autoincrement())
+  slug               String    @unique
+  status             String    @default("draft")
+  clientName         String
+  clientAlias        String?
+  industry           String
+  platform           String
+  city               String?
+  engagementDuration String?
+  year               Int?
+  serviceId          Int?
+  service            Service?  @relation(fields: [serviceId], references: [id])
+  primaryMetric      String
+  primaryDelta       String
+  secondaryMetric    String?
+  secondaryDelta     String?
+  thirdMetric        String?
+  thirdDelta         String?
+  timeToResult       String?
+  challenge          String?
+  approach           String?
+  keyInsight         String?
+  clientQuote        String?
+  clientQuoteAuthor  String?
+  title              String?
+  metaDesc           String?
+  primaryKw          String?
+  featuredImage      String?
+  featuredHome       Boolean   @default(false)
+  featuredService    Boolean   @default(false)
+  layoutHtml         String?
+  layoutCss          String?
+  layoutJson         Json?
+  useLayout          Boolean   @default(false)
+  aiGenerated        Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model Media {
+  id           Int      @id @default(autoincrement())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  alt          String?
+  uploadedBy   String?
+  createdAt    DateTime @default(now())
 }
 
 model AiJob {
@@ -81,6 +146,17 @@ model AiJob {
   prompt    String?
   resultLog String?
   errorLog  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("editor")
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
