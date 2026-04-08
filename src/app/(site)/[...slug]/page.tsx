@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { buildMetadata, buildLocalBusinessSchema, buildServiceSchema } from '@/lib/seo'
+import { resolveLayout } from '@/lib/layout-resolver'
 import { Metadata } from 'next'
 import { ServiceTemplate } from '@/components/templates/ServiceTemplate'
 import { LocationTemplate } from '@/components/templates/LocationTemplate'
@@ -44,18 +45,23 @@ export default async function DynamicPage({ params }: Props) {
     schema = buildServiceSchema(page.service.name, page.metaDesc || '')
   }
 
-  // GrapesJS layout takes precedence when active
-  if (page.useLayout && page.layoutHtml) {
+  // Layout priority: per-page override → published PageTemplate → React template
+  const layout = await resolveLayout(page.pageType, {
+    useLayout: page.useLayout,
+    layoutHtml: page.layoutHtml,
+    layoutCss: page.layoutCss,
+  })
+
+  if (layout) {
     return (
       <>
         {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />}
-        <style dangerouslySetInnerHTML={{ __html: page.layoutCss || '' }} />
-        <div dangerouslySetInnerHTML={{ __html: page.layoutHtml }} />
+        <style dangerouslySetInnerHTML={{ __html: layout.css }} />
+        <div dangerouslySetInnerHTML={{ __html: layout.html }} />
       </>
     )
   }
 
-  // Otherwise pick template by pageType
   const Template = TEMPLATES[page.pageType] || TEMPLATES.service
   return (
     <>

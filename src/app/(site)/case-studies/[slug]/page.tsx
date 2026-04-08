@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { buildMetadata } from '@/lib/seo'
+import { resolveLayout } from '@/lib/layout-resolver'
 import { CaseStudyTemplate } from '@/components/templates/CaseStudyTemplate'
 import { Metadata } from 'next'
 
@@ -16,11 +17,17 @@ export default async function CaseStudyPage({ params }: { params: { slug: string
   const cs = await prisma.caseStudy.findUnique({ where: { slug: params.slug } })
   if (!cs || cs.status !== 'published') notFound()
 
-  if (cs.useLayout && cs.layoutHtml) {
+  const layout = await resolveLayout('case-study', {
+    useLayout: cs.useLayout,
+    layoutHtml: cs.layoutHtml,
+    layoutCss: cs.layoutCss,
+  })
+
+  if (layout) {
     return (
       <>
-        <style dangerouslySetInnerHTML={{ __html: cs.layoutCss || '' }} />
-        <div dangerouslySetInnerHTML={{ __html: cs.layoutHtml }} />
+        <style dangerouslySetInnerHTML={{ __html: layout.css }} />
+        <div dangerouslySetInnerHTML={{ __html: layout.html }} />
       </>
     )
   }

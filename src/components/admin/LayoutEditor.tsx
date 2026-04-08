@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef } from 'react'
+import 'grapesjs/dist/css/grapes.min.css'
 
 interface Props {
   initialData?: object
@@ -31,9 +32,7 @@ export default function LayoutEditor({ initialData, initialHtml, onSave, onClose
         width: '100%',
         plugins: [preset.default],
         storageManager: false,
-        blockManager: { appendTo: '#grapes-blocks' },
-        styleManager: { appendTo: '#grapes-styles' },
-        layerManager: { appendTo: '#grapes-layers' },
+        // Let GrapesJS render its own panels (blocks / layers / styles) inside the container.
       })
       if (initialData) editor.loadProjectData(initialData)
       else if (initialHtml) editor.setComponents(initialHtml)
@@ -55,20 +54,15 @@ export default function LayoutEditor({ initialData, initialHtml, onSave, onClose
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', flexDirection: 'column', background: '#fff' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: '#1a1a2e' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 16px', background: '#1a1a2e', flexShrink: 0 }}>
         <span style={{ color: '#fff', fontWeight: 500, fontSize: 14 }}>Layout editor</span>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
           <button onClick={onClose} style={{ padding: '6px 16px', borderRadius: 6, border: '1px solid #555', background: 'transparent', color: '#fff', cursor: 'pointer', fontSize: 13 }}>Cancel</button>
           <button onClick={handleSave} style={{ padding: '6px 16px', borderRadius: 6, border: 'none', background: '#EE4D34', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 500 }}>Save layout</button>
         </div>
       </div>
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <div id="grapes-blocks" style={{ width: 200, borderRight: '1px solid #e5e7eb', overflowY: 'auto', background: '#f9fafb' }} />
-        <div ref={containerRef} style={{ flex: 1 }} />
-        <div style={{ width: 240, borderLeft: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column' }}>
-          <div id="grapes-layers" style={{ flex: '0 0 50%', overflowY: 'auto', borderBottom: '1px solid #e5e7eb' }} />
-          <div id="grapes-styles" style={{ flex: '0 0 50%', overflowY: 'auto' }} />
-        </div>
+      <div style={{ flex: 1, height: '100%', minHeight: 0, background: '#fff', overflow: 'hidden' }}>
+        <div ref={containerRef} style={{ height: '100%', width: '100%', background: '#fff' }} />
       </div>
     </div>
   )

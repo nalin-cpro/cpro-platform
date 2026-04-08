@@ -8,5 +8,10 @@ export async function POST(request: NextRequest) {
   if (type === 'page')       await prisma.page.update({ where: { id }, data })
   if (type === 'blog')       await prisma.blogPost.update({ where: { id }, data })
   if (type === 'case-study') await prisma.caseStudy.update({ where: { id }, data })
+  // Templates don't have a useLayout field — only the three layout columns
+  if (type === 'template')   await prisma.pageTemplate.update({
+    where: { id },
+    data: { layoutHtml: html, layoutCss: css, layoutJson: json },
+  })
   return NextResponse.json({ success: true })
 }

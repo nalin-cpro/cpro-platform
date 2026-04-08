@@ -150,6 +150,20 @@ model AiJob {
   updatedAt DateTime @updatedAt
 }
 
+model PageTemplate {
+  id         Int      @id @default(autoincrement())
+  name       String
+  pageType   String
+  layoutHtml String?
+  layoutCss  String?
+  layoutJson Json?
+  status     String   @default("draft")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([pageType, status])
+}
+
 model AdminUser {
   id        Int      @id @default(autoincrement())
   email     String   @unique
