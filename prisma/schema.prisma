@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  city      String   @unique
+  state     String
+  slug      String   @unique
+  lat       Float?
+  lng       Float?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  pages     Page[]
+}
+
+model Service {
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String   @unique
+  cluster    String
+  parentSlug String?
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  pages      Page[]
+}
+
+model Page {
+  id           Int       @id @default(autoincrement())
+  slug         String    @unique
+  pageType     String
+  status       String    @default("draft")
+  title        String
+  metaDesc     String?
+  h1           String?
+  canonical    String?
+  ogTitle      String?
+  ogDesc       String?
+  primaryKw    String?
+  secondaryKws String[]  @default([])
+  bodyJson     Json?
+  serviceId    Int?
+  service      Service?  @relation(fields: [serviceId], references: [id])
+  locationId   Int?
+  location     Location? @relation(fields: [locationId], references: [id])
+  aiGenerated  Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  aiJobs       AiJob[]
+}
+
+model BlogPost {
+  id           Int       @id @default(autoincrement())
+  slug         String    @unique
+  status       String    @default("draft")
+  title        String
+  metaDesc     String?
+  primaryKw    String?
+  secondaryKws String[]  @default([])
+  excerpt      String?
+  bodyMd       String?
+  category     String?
+  tags         String[]  @default([])
+  aiGenerated  Boolean   @default(false)
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model AiJob {
+  id        Int      @id @default(autoincrement())
+  pageId    Int?
+  page      Page?    @relation(fields: [pageId], references: [id])
+  jobType   String
+  status    String   @default("pending")
+  prompt    String?
+  resultLog String?
+  errorLog  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
