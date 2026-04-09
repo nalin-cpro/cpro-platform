@@ -1,0 +1,6 @@
+# Force LF line endings for shell scripts and other Unix-only files,
+# regardless of the Windows core.autocrlf setting on dev machines.
+# Without this, bash on the Linux server fails on \r in the shebang.
+*.sh        text eol=lf
+*.bash      text eol=lf
+Dockerfile  text eol=lf
