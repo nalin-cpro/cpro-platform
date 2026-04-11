@@ -6,18 +6,17 @@ const navItems: { label: string; href: string; children?: { label: string; href:
   { label: 'Home', href: '/' },
   {
     label: 'Services',
-    href: '/services',
+    href: '/digital-marketing',
     children: [
       { label: 'Digital Marketing', href: '/digital-marketing' },
       { label: 'CRO', href: '/cro' },
-      { label: 'Marketplace Management', href: '/marketplaces' },
+      { label: 'Marketplaces', href: '/marketplaces' },
       { label: 'Zoho Services', href: '/zoho' },
       { label: 'Web Development', href: '/development' },
     ],
   },
   { label: 'Case Studies', href: '/case-studies' },
   { label: 'Blog', href: '/blog' },
-  { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
 
