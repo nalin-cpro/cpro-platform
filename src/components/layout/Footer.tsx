@@ -1,137 +1,50 @@
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
-
-const footerLinks = {
-  Services: [
-    { label: 'Digital Marketing', href: '/digital-marketing' },
-    { label: 'CRO', href: '/cro' },
-    { label: 'Marketplace Management', href: '/marketplaces' },
-    { label: 'Zoho Services', href: '/zoho' },
-    { label: 'Web Development', href: '/development' },
-  ],
-  Company: [
-    { label: 'About Us', href: '/about' },
-    { label: 'Case Studies', href: '/case-studies' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
-  ],
-  'Quick Links': [
-    { label: 'CRO Audit (Free)', href: '/contact' },
-    { label: 'Zoho Demo', href: '/contact' },
-    { label: 'Sitemap', href: '/sitemap.xml' },
-  ],
-}
-
-const gridStyle: CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-  gap: 48,
-  marginBottom: 60,
-}
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#062B3E', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
-      <div className="container-site">
-        <div style={gridStyle}>
-          {/* Brand col */}
-          <div style={{ minWidth: 0 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/brand/logo.png"
-              alt="ConversionPro LLP"
-              style={{ height: 40, width: 'auto', marginBottom: 20, filter: 'brightness(0) invert(1)' }}
-            />
-            <p style={{ fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.65)', marginBottom: 24, maxWidth: 280 }}>
-              Data-driven digital marketing, CRO and Zoho consulting for eCommerce brands across India.
-            </p>
-            <div style={{ display: 'flex', gap: 12 }}>
-              {[
-                { label: 'LI', href: 'https://linkedin.com/company/conversionpro' },
-                { label: 'IG', href: 'https://instagram.com/conversionprollp' },
-              ].map(s => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: '#ffffff',
-                    textDecoration: 'none',
-                    transition: 'background 0.35s ease',
-                  }}
-                >
-                  {s.label}
-                </a>
-              ))}
-            </div>
+    <footer className="bg-slate-900 text-white py-16 px-6 md:px-10">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+        <div className="flex flex-col gap-6 md:w-1/3">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-2xl">bolt</span>
+            <span className="text-lg font-black text-white font-headline">CONVERSIONPRO</span>
+          </Link>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Pune&apos;s leading conversion-focused agency helping brands scale profitably through UX, CRO, and performance marketing.
+          </p>
+          <div className="flex gap-4">
+            <a href="https://linkedin.com/company/conversionpro" target="_blank" rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors">
+              <span className="material-symbols-outlined text-sm">share</span>
+            </a>
+            <a href="https://instagram.com/conversionprollp" target="_blank" rel="noopener noreferrer"
+              className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors">
+              <span className="material-symbols-outlined text-sm">hub</span>
+            </a>
           </div>
-
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([heading, links]) => (
-            <div key={heading}>
-              <h4
-                style={{
-                  fontFamily: 'var(--font-inter), Inter, sans-serif',
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: '#ffffff',
-                  marginBottom: 20,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {heading}
-              </h4>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {links.map(link => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      style={{
-                        fontSize: 14,
-                        color: 'rgba(255,255,255,0.65)',
-                        textDecoration: 'none',
-                        transition: 'color 0.3s ease',
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
 
-        {/* Bottom bar */}
-        <div
-          style={{
-            borderTop: '1px solid rgba(255,255,255,0.1)',
-            paddingTop: 24,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 12,
-          }}
-        >
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>
-            © {new Date().getFullYear()} ConversionPro LLP. All rights reserved.
-          </p>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>
-            Pune · Mumbai · Bangalore · Delhi · Hyderabad · Chennai
-          </p>
+        <div className="grid grid-cols-2 gap-12">
+          <div className="flex flex-col gap-4">
+            <p className="font-bold text-primary uppercase text-xs tracking-widest">Solutions</p>
+            <Link href="/cro" className="text-slate-400 hover:text-white transition-colors text-sm">CRO</Link>
+            <Link href="/digital-marketing" className="text-slate-400 hover:text-white transition-colors text-sm">Digital Marketing</Link>
+            <Link href="/marketplaces" className="text-slate-400 hover:text-white transition-colors text-sm">Marketplaces</Link>
+            <Link href="/zoho" className="text-slate-400 hover:text-white transition-colors text-sm">Zoho Services</Link>
+            <Link href="/development" className="text-slate-400 hover:text-white transition-colors text-sm">Web Development</Link>
+          </div>
+          <div className="flex flex-col gap-4">
+            <p className="font-bold text-primary uppercase text-xs tracking-widest">Company</p>
+            <Link href="/case-studies" className="text-slate-400 hover:text-white transition-colors text-sm">Case Studies</Link>
+            <Link href="/blog" className="text-slate-400 hover:text-white transition-colors text-sm">Blog</Link>
+            <Link href="/contact" className="text-slate-400 hover:text-white transition-colors text-sm">Contact Us</Link>
+          </div>
         </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
+        <p>© {new Date().getFullYear()} ConversionPro LLP. All rights reserved.</p>
+        <p>Made with precision in Pune.</p>
       </div>
     </footer>
   )

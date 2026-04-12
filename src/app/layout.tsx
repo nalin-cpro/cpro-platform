@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Rubik } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { getSiteConfig } from "@/lib/site-config";
 
-// Design system fonts: Inter for headings, Rubik for body
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const rubik = Rubik({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-rubik",
+  weight: ["700", "800"],
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -41,11 +40,12 @@ export default async function RootLayout({
   `;
 
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         <style dangerouslySetInnerHTML={{ __html: brandCss }} />
       </head>
-      <body className={`${inter.variable} ${rubik.variable}`}>
+      <body className={`${inter.variable} ${jakarta.variable}`}>
         {children}
       </body>
     </html>

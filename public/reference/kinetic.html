@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ConversionPro LLP | UX-Led Conversion Agency</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#00677c",
+                        "inverse-primary": "#ffb4a4",
+                        "on-primary-container": "#580c00",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed-dim": "#60d5f5",
+                        "primary": "#b72301",
+                        "on-background": "#0d1c32",
+                        "secondary": "#515f78",
+                        "surface-container": "#e8eeff",
+                        "primary-container": "#ff5733",
+                        "surface-container-high": "#dfe8ff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d6e3ff",
+                        "on-secondary-fixed": "#0d1c32",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#b9c7e4",
+                        "outline": "#8f7069",
+                        "on-secondary-container": "#55637d",
+                        "tertiary-fixed": "#b0ecff",
+                        "outline-variant": "#e4beb6",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#5b403a",
+                        "on-surface": "#0d1c32",
+                        "inverse-surface": "#233148",
+                        "on-primary-fixed": "#3d0600",
+                        "surface-variant": "#d6e3ff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#002f3a",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#8c1800",
+                        "surface-tint": "#b72301",
+                        "surface-container-low": "#f0f3ff",
+                        "secondary-fixed": "#d6e3ff",
+                        "inverse-on-surface": "#ecf0ff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#39475f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#004e5e",
+                        "primary-fixed": "#ffdad3",
+                        "surface-bright": "#f9f9ff",
+                        "primary-fixed-dim": "#ffb4a4",
+                        "tertiary-container": "#009fbd",
+                        "on-tertiary-fixed": "#001f27",
+                        "secondary-container": "#d2e0fe",
+                        "surface-dim": "#ccdaf8",
+                        "background": "#f9f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            background: rgba(249, 249, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .kinetic-gradient {
+            background: linear-gradient(135deg, #b72301 0%, #ff5733 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background font-body antialiased">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 glass-header shadow-sm">
+<div class="flex justify-between items-center px-6 py-4 max-w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-600 text-2xl" data-icon="bolt">bolt</span>
+<span class="text-xl font-black tracking-tighter text-slate-900 font-headline">KINETIC</span>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-orange-600 font-bold border-b-2 border-orange-600 py-1 transition-colors" href="#">Home</a>
+<a class="text-slate-600 font-medium hover:text-orange-500 transition-colors" href="#">Services</a>
+<a class="text-slate-600 font-medium hover:text-orange-500 transition-colors" href="#">Work</a>
+<a class="text-slate-600 font-medium hover:text-orange-500 transition-colors" href="#">About</a>
+</div>
+<button class="bg-primary text-white px-5 py-2 rounded-full font-headline font-bold text-sm tracking-tight hover:scale-105 active:scale-95 transition-all shadow-md">
+                GET AUDIT
+            </button>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative px-6 py-16 md:py-32 overflow-hidden bg-surface">
+<div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl"></div>
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col gap-6 md:w-2/3">
+<span class="inline-flex items-center gap-2 bg-surface-container-high text-primary font-label text-xs font-bold px-4 py-1.5 rounded-full w-fit tracking-wider">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                        PUNE-BASED PERFORMANCE AGENCY
+                    </span>
+<h1 class="text-5xl md:text-7xl font-headline font-extrabold text-on-background leading-[1.1] tracking-tight">
+                        UX-led conversion that <span class="text-primary italic">drives revenue</span>
+</h1>
+<p class="text-lg text-secondary max-w-xl leading-relaxed">
+                        We transform digital storefronts into high-performance revenue engines using data-driven research and intentional user experience design.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+<button class="kinetic-gradient text-white px-8 py-4 rounded-full font-headline font-bold text-lg flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
+                            Get a free audit
+                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="border border-outline-variant/30 bg-white/50 text-on-background px-8 py-4 rounded-full font-headline font-bold text-lg hover:bg-surface-container-low transition-colors">
+                            See case studies
+                        </button>
+</div>
+</div>
+<!-- Stats Badges -->
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-3xl font-headline font-black text-primary">+47%</p>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mt-1">Conversion Lift</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-3xl font-headline font-black text-on-background">90d</p>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mt-1">Avg Result Time</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-3xl font-headline font-black text-on-background">150+</p>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mt-1">Brands Scaled</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-3xl font-headline font-black text-tertiary">3.2x</p>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mt-1">ROAS Growth</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Social Proof: Logo Wall -->
+<section class="py-12 bg-surface-container-low">
+<div class="px-6 text-center mb-8">
+<p class="text-sm font-label font-bold text-secondary tracking-widest uppercase opacity-60">Trusted by 150+ world-class brands</p>
+</div>
+<div class="flex overflow-hidden space-x-12 group">
+<div class="flex space-x-12 animate-scroll">
+<!-- Placeholder logos with neutral styling -->
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl italic tracking-tighter">NIKE</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl tracking-widest">SAMSUNG</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl">ADOBE</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl underline decoration-primary">ZARA</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl italic tracking-tighter">NIKE</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl tracking-widest">SAMSUNG</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl">ADOBE</div>
+<div class="flex-shrink-0 grayscale opacity-40 hover:opacity-100 transition-opacity flex items-center font-headline font-black text-xl underline decoration-primary">ZARA</div>
+</div>
+</div>
+<style>
+                @keyframes scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-scroll {
+                    animation: scroll 20s linear infinite;
+                    display: flex;
+                    width: 200%;
+                }
+            </style>
+</section>
+<!-- Value Prop Section -->
+<section class="px-6 py-24 bg-surface max-w-7xl mx-auto">
+<div class="grid md:grid-cols-3 gap-12">
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-2xl bg-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="biotech">biotech</span>
+</div>
+<h3 class="text-2xl font-headline font-bold">Research-led decisions</h3>
+<p class="text-secondary leading-relaxed">No guesswork. Every pixel move and button placement is backed by user behavioral data and heatmaps.</p>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="speed">speed</span>
+</div>
+<h3 class="text-2xl font-headline font-bold">Results in 30-90 days</h3>
+<p class="text-secondary leading-relaxed">We focus on high-impact levers that move the needle quickly, delivering tangible revenue growth within 3 months.</p>
+</div>
+<div class="flex flex-col gap-4">
+<div class="w-14 h-14 rounded-2xl bg-on-background/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-background text-3xl" data-icon="handshake">handshake</span>
+</div>
+<h3 class="text-2xl font-headline font-bold">Long-term partnership</h3>
+<p class="text-secondary leading-relaxed">We don't just audit and leave. We integrate with your team to ensure continuous iterative optimization and growth.</p>
+</div>
+</div>
+</section>
+<!-- Case Studies (Bento Grid Style) -->
+<section class="py-24 bg-surface-container-low">
+<div class="px-6 max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight">Impact Driven Work</h2>
+<p class="text-secondary mt-2">Real results for real businesses.</p>
+</div>
+<a class="hidden md:flex items-center gap-2 text-primary font-bold hover:underline" href="#">
+                        View All Stories
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_outward">arrow_outward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Main Feature -->
+<div class="md:col-span-8 group relative overflow-hidden rounded-3xl h-[400px]">
+<img alt="Footwear Case Study" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="high-end red sports shoe on a dark minimalist background with dramatic red lighting and soft shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgFgvjyFViw9DsSM-8czLzSMvHHGzxw8RdISOFegvm_kcUUsVoGxlbZZ6MuKvEcciZlpd1_JIdrmt4EuqPU2mz8JJ7odPurLTcM8Yrh6aAEu82v761gk3jnVbJ1eFeOTSDuuuHHJ9mLrWbSjnBgDLJss1Zk8xKbk1Irtikq0evdJG-72EHVVwCDZx-TqPnGszgQHEtEudjm2rOa8aRo7-vNd2ZMdliEArFUOjXxqnf7Y_y9GUc57UgHEbCnpxO6pytH3QkvQyF1c74"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-background to-transparent opacity-80"></div>
+<div class="absolute bottom-0 left-0 p-8 text-white">
+<span class="bg-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 inline-block">Footwear Brand</span>
+<h3 class="text-3xl font-headline font-extrabold mb-2">+120% ROAS Increase</h3>
+<p class="text-white/80 max-w-md">Complete UX overhaul of the checkout funnel resulting in record-breaking conversion lift.</p>
+</div>
+</div>
+<!-- Side 1 -->
+<div class="md:col-span-4 bg-white rounded-3xl p-8 flex flex-col justify-between border border-outline-variant/10 shadow-sm">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-4xl" data-icon="hub">hub</span>
+<span class="text-tertiary font-black text-2xl">+85%</span>
+</div>
+<div>
+<p class="text-sm font-bold text-secondary uppercase tracking-widest mb-1">SaaS Co</p>
+<h4 class="text-xl font-headline font-bold text-on-background">LTV Expansion</h4>
+</div>
+</div>
+<!-- Side 2 -->
+<div class="md:col-span-4 bg-on-background text-white rounded-3xl p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-primary font-black text-2xl">+64%</span>
+</div>
+<div>
+<p class="text-sm font-bold text-white/60 uppercase tracking-widest mb-1">Fashion Brand</p>
+<h4 class="text-xl font-headline font-bold">Revenue Growth</h4>
+</div>
+</div>
+<!-- Side 3 -->
+<div class="md:col-span-8 bg-surface-container-highest rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center border border-outline-variant/10">
+<div class="flex-1">
+<p class="text-sm font-bold text-secondary uppercase tracking-widest mb-1">Manufacturing Group</p>
+<h4 class="text-2xl font-headline font-extrabold text-on-background mb-4">Streamlining B2B Lead Gen with Zoho One</h4>
+<p class="text-secondary">Reduced lead acquisition cost by 40% using automated CRM integration.</p>
+</div>
+<div class="text-5xl font-headline font-black text-primary italic">-40%</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Growth Partner / Grid Stats -->
+<section class="py-24 px-6 max-w-7xl mx-auto">
+<div class="grid md:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight mb-6">Your Complete Growth Partner</h2>
+<p class="text-lg text-secondary leading-relaxed mb-8">We don't just do marketing; we engineer growth. Our holistic approach covers everything from the first ad click to the final checkout and lifetime customer retention.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-bold text-on-background">End-to-end strategy execution</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-bold text-on-background">Custom data visualization dashboards</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-bold text-on-background">Dedicated account growth manager</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="aspect-square bg-surface-container-low rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+<span class="text-4xl font-headline font-black text-on-background mb-2">8+</span>
+<span class="text-xs font-label uppercase font-bold text-secondary tracking-widest">Years of Expertise</span>
+</div>
+<div class="aspect-square kinetic-gradient rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-xl">
+<span class="text-4xl font-headline font-black text-white mb-2">150+</span>
+<span class="text-xs font-label uppercase font-bold text-white/80 tracking-widest">Happy Clients</span>
+</div>
+<div class="aspect-square bg-on-background rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+<span class="text-4xl font-headline font-black text-primary mb-2">50+</span>
+<span class="text-xs font-label uppercase font-bold text-white/60 tracking-widest">Experts Team</span>
+</div>
+<div class="aspect-square bg-surface-container-high rounded-3xl p-8 flex flex-col justify-center items-center text-center">
+<span class="text-4xl font-headline font-black text-tertiary mb-2">500M</span>
+<span class="text-xs font-label uppercase font-bold text-secondary tracking-widest">Managed Spend</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="px-6 max-w-7xl mx-auto">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="text-4xl font-headline font-extrabold tracking-tight mb-4">Specialized Services</h2>
+<p class="text-secondary">Comprehensive digital solutions designed for conversion and scale.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Service Card 1 -->
+<div class="p-10 rounded-[2rem] bg-white border border-outline-variant/10 hover:border-primary/20 transition-all hover:shadow-xl group">
+<span class="material-symbols-outlined text-4xl text-primary mb-6" data-icon="ads_click">ads_click</span>
+<h3 class="text-2xl font-headline font-bold mb-4">Digital Marketing</h3>
+<p class="text-secondary mb-8 leading-relaxed">Full-funnel performance marketing across Meta, Google, and TikTok with ROI focus.</p>
+<a class="inline-flex items-center gap-2 text-on-background font-bold group-hover:text-primary transition-colors" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Service Card 2 -->
+<div class="p-10 rounded-[2rem] bg-white border border-outline-variant/10 hover:border-primary/20 transition-all hover:shadow-xl group">
+<span class="material-symbols-outlined text-4xl text-primary mb-6" data-icon="monitoring">monitoring</span>
+<h3 class="text-2xl font-headline font-bold mb-4">CRO</h3>
+<p class="text-secondary mb-8 leading-relaxed">Systematic A/B testing and user research to squeeze every drop of revenue from your traffic.</p>
+<a class="inline-flex items-center gap-2 text-on-background font-bold group-hover:text-primary transition-colors" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Service Card 3 -->
+<div class="p-10 rounded-[2rem] bg-white border border-outline-variant/10 hover:border-primary/20 transition-all hover:shadow-xl group">
+<span class="material-symbols-outlined text-4xl text-primary mb-6" data-icon="storefront">storefront</span>
+<h3 class="text-2xl font-headline font-bold mb-4">Marketplaces</h3>
+<p class="text-secondary mb-8 leading-relaxed">Amazon and Flipkart advertising and account management for maximum shelf visibility.</p>
+<a class="inline-flex items-center gap-2 text-on-background font-bold group-hover:text-primary transition-colors" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Service Card 4 -->
+<div class="p-10 rounded-[2rem] bg-white border border-outline-variant/10 hover:border-primary/20 transition-all hover:shadow-xl group">
+<span class="material-symbols-outlined text-4xl text-primary mb-6" data-icon="integration_instructions">integration_instructions</span>
+<h3 class="text-2xl font-headline font-bold mb-4">Zoho One</h3>
+<p class="text-secondary mb-8 leading-relaxed">Custom CRM setup and business process automation to scale operations flawlessly.</p>
+<a class="inline-flex items-center gap-2 text-on-background font-bold group-hover:text-primary transition-colors" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Service Card 5 -->
+<div class="p-10 rounded-[2rem] bg-white border border-outline-variant/10 hover:border-primary/20 transition-all hover:shadow-xl group">
+<span class="material-symbols-outlined text-4xl text-primary mb-6" data-icon="code">code</span>
+<h3 class="text-2xl font-headline font-bold mb-4">Web Development</h3>
+<p class="text-secondary mb-8 leading-relaxed">Lightning-fast headless commerce and high-converting landing pages built on modern stacks.</p>
+<a class="inline-flex items-center gap-2 text-on-background font-bold group-hover:text-primary transition-colors" href="#">
+                            Learn more
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Service Card 6 (CTA Block) -->
+<div class="p-10 rounded-[2rem] bg-primary text-white flex flex-col justify-center">
+<h3 class="text-3xl font-headline font-black mb-4">Don't see what you need?</h3>
+<p class="text-white/80 mb-8">We create custom growth packages for ambitious brands.</p>
+<button class="bg-white text-primary px-6 py-3 rounded-full font-bold w-fit">Inquire Now</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="py-24 px-6">
+<div class="max-w-5xl mx-auto kinetic-gradient rounded-[3rem] p-12 md:p-24 text-center text-white relative overflow-hidden shadow-2xl">
+<div class="absolute -top-12 -left-12 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-12 -right-12 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+<div class="relative z-10">
+<h2 class="text-4xl md:text-6xl font-headline font-black mb-6 tracking-tight">Ready to grow your business?</h2>
+<p class="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed">Book a 30-minute growth audit with our specialists. We'll identify at least 3 quick-win opportunities for your brand.</p>
+<button class="bg-white text-primary px-10 py-5 rounded-full font-headline font-black text-xl hover:scale-105 transition-transform shadow-lg">
+                        Get my free audit
+                    </button>
+<p class="mt-6 text-sm text-white/60 font-medium">No obligation. Just high-value strategy.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 text-white py-16 px-10">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="flex flex-col gap-6 md:w-1/3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-500 text-2xl" data-icon="bolt">bolt</span>
+<span class="text-lg font-black text-white font-headline">KINETIC</span>
+</div>
+<p class="text-slate-400 font-inter text-sm leading-relaxed">Pune's leading conversion-focused agency helping brands scale profitably through UX and performance marketing.</p>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="share">share</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-orange-500 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="hub">hub</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-2 gap-12">
+<div class="flex flex-col gap-4">
+<p class="font-bold text-orange-500 uppercase text-xs tracking-widest">Solutions</p>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">UX Audit</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">Conversion Rate Optimization</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">Digital Marketing Strategy</a>
+</div>
+<div class="flex flex-col gap-4">
+<p class="font-bold text-orange-500 uppercase text-xs tracking-widest">Company</p>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">Case Studies</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">Contact Us</a>
+<a class="text-slate-400 hover:text-white transition-colors text-sm" href="#">Privacy Policy</a>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
+<p>© 2024 Kinetic Authority. All rights reserved.</p>
+<p>Made with precision in Pune.</p>
+</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 glass-header border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Services</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Work</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Contact</span>
+</button>
+</div>
+</body></html>

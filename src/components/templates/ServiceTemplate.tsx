@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
 
 interface ServiceBody {
   hero_subtitle?: string
@@ -12,243 +11,110 @@ interface ServiceBody {
   cta_text?: string
 }
 
-const placeholderImg: CSSProperties = {
-  background: 'var(--color-surface)',
-  borderRadius: 30,
-  aspectRatio: '4/3',
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: 60,
-  color: 'var(--color-border)',
-}
-
 const defaultFeatures = [
   { title: 'Research-led approach', desc: 'Heatmaps, recordings and analytics inform every recommendation.' },
   { title: 'Test-driven decisions', desc: 'A/B testing every change to prove uplift before scaling.' },
-  { title: 'Long-term partnership', desc: 'Ongoing iteration after the first wins — we don\u2019t disappear.' },
-]
-
-const defaultBullets = [
-  'Conversion audit and funnel analysis',
-  'Heatmap and session recording setup',
-  'A/B test design and execution',
-  'Personalisation strategy',
-  'Reporting and quarterly reviews',
+  { title: 'Long-term partnership', desc: "We don't just disappear — ongoing iteration after the first wins." },
 ]
 
 export function ServiceTemplate({ page }: { page: { title: string; h1?: string | null; bodyJson: ServiceBody | null; service?: { name: string } | null } }) {
   const body = page.bodyJson || {}
-  const features = body.features && body.features.length ? body.features : defaultFeatures
-  const bullets = body.bullets && body.bullets.length ? body.bullets : defaultBullets
+  const features = body.features?.length ? body.features : defaultFeatures
   const sections = body.sections || []
   const faqs = body.faq || []
 
   return (
     <>
-      {/* PAGE TITLE HERO */}
-      <section className="page-title-hero">
-        <div className="container-site" style={{ textAlign: 'center' }}>
-          <div className="breadcrumb" style={{ justifyContent: 'center' }}>
-            <Link href="/">Home</Link>
-            <span className="breadcrumb-sep" />
-            <Link href="/services">Services</Link>
-            <span className="breadcrumb-sep" />
-            <span>{page.service?.name || page.title}</span>
-          </div>
-          <h1 style={{ marginTop: 16 }}>{page.h1 || page.title}</h1>
-          {body.hero_subtitle && (
-            <p style={{ fontSize: 18, color: 'var(--color-body)', maxWidth: 720, margin: '20px auto 0' }}>{body.hero_subtitle}</p>
-          )}
+      {/* Hero */}
+      <section className="relative px-6 py-16 md:py-24 bg-surface overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto relative">
+          <span className="inline-flex items-center gap-2 bg-surface-container-high text-primary font-label text-xs font-bold px-4 py-1.5 rounded-full w-fit tracking-wider mb-4">
+            <span className="material-symbols-outlined text-sm">category</span>
+            {page.service?.name?.toUpperCase() || 'SERVICE'}
+          </span>
+          <h1 className="text-4xl md:text-6xl font-headline font-extrabold text-on-background leading-[1.1] mb-6 max-w-3xl">
+            {page.h1 || page.title}
+          </h1>
+          {body.hero_subtitle && <p className="text-lg text-secondary max-w-2xl leading-relaxed mb-8">{body.hero_subtitle}</p>}
+          <Link href="/contact" className="kinetic-gradient text-white px-8 py-4 rounded-full font-headline font-bold text-lg inline-flex items-center gap-2 shadow-lg hover:scale-[1.02] transition-transform">
+            Get a free audit <span className="material-symbols-outlined">arrow_forward</span>
+          </Link>
         </div>
       </section>
 
-      {/* WHAT WE OFFER */}
-      <section style={{ padding: '100px 0' }}>
-        <div className="container-site">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 60, alignItems: 'center' }}>
-            <div>
-              <span className="section-label">WHAT WE OFFER</span>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, marginBottom: 20 }}>
-                Outcomes-first <span className="text-gradient">{page.service?.name || 'service'}</span>
-              </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--color-body)', marginBottom: 28 }}>
-                {body.intro_text || 'We focus on the metrics that move your business — conversion rate, AOV, retention. Every recommendation is backed by data and tested against your real users.'}
-              </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 32px', display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {bullets.map((b, i) => (
-                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, fontSize: 15, color: 'var(--color-header)' }}>
-                    <span style={{ color: 'var(--color-accent)', fontWeight: 700, flexShrink: 0 }}>✓</span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/contact" className="btn-primary">Get a free audit →</Link>
+      {/* Value props / features */}
+      <section className="px-6 py-24 bg-surface-container-lowest max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-8">
+          {features.slice(0, 3).map((f, i) => (
+            <div key={i} className="p-8 rounded-[2rem] bg-white border border-outline-variant/10 hover:shadow-card-hover transition-shadow">
+              <span className="material-symbols-outlined text-4xl text-primary mb-6 block">{['biotech', 'monitoring', 'handshake'][i] || 'check_circle'}</span>
+              <h3 className="text-2xl font-headline font-bold mb-3">{f.title}</h3>
+              <p className="text-secondary leading-relaxed">{f.desc}</p>
             </div>
-            <div style={placeholderImg}>📊</div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* DARK FEATURE STRIP */}
-      <section className="section-dark">
-        <div className="container-site">
-          <div className="grid-3">
-            {features.slice(0, 3).map((f, i) => (
-              <div
-                key={i}
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: 30,
-                  padding: 36,
-                }}
-              >
-                <div style={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: 16,
-                  background: 'var(--gradient-brand)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 24,
-                  marginBottom: 20,
-                }}>
-                  ✓
-                </div>
-                <h3 style={{ fontSize: 22, fontWeight: 600, color: '#fff', marginBottom: 12 }}>{f.title}</h3>
-                <p style={{ fontSize: 15, lineHeight: 1.7, color: 'rgba(255,255,255,0.7)', marginBottom: 20 }}>{f.desc}</p>
-                <Link href="#" style={{ fontSize: 14, color: '#FF6B4A', fontWeight: 500, textDecoration: 'none' }}>
-                  Discover more →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ALTERNATING CONTENT SECTIONS */}
+      {/* Content sections */}
       {sections.map((s, i) => (
-        <section key={i} style={{ padding: '100px 0', background: i % 2 === 0 ? '#fff' : 'var(--color-surface)' }}>
-          <div className="container-site">
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 60, alignItems: 'center', direction: i % 2 === 0 ? 'ltr' : 'rtl' }}>
-              <div style={{ direction: 'ltr' }}>
-                <span className="section-label">{i === 0 ? 'OUR PROCESS' : 'OUR APPROACH'}</span>
-                <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 38px)', fontWeight: 700, marginBottom: 20 }}>{s.heading}</h2>
-                <p style={{ fontSize: 16, lineHeight: 1.7, color: 'var(--color-body)' }}>{s.body}</p>
-              </div>
-              <div style={{ ...placeholderImg, direction: 'ltr' }}>{i % 2 === 0 ? '🎯' : '⚡'}</div>
+        <section key={i} className={`px-6 py-20 ${i % 2 === 0 ? 'bg-surface' : 'bg-surface-container-low'}`}>
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div className={i % 2 ? 'md:order-2' : ''}>
+              <h2 className="text-3xl font-headline font-extrabold mb-4">{s.heading}</h2>
+              <p className="text-secondary text-lg leading-relaxed">{s.body}</p>
+            </div>
+            <div className={`bg-surface-container-high rounded-3xl aspect-video flex items-center justify-center ${i % 2 ? 'md:order-1' : ''}`}>
+              <span className="material-symbols-outlined text-6xl text-primary/20">{i % 2 === 0 ? 'monitoring' : 'biotech'}</span>
             </div>
           </div>
         </section>
       ))}
 
-      {/* STATS BAR */}
+      {/* Stats */}
       {body.stats && body.stats.length > 0 && (
-        <section className="section-dark">
-          <div className="container-site">
-            <div className="grid-3" style={{ textAlign: 'center', gap: 40 }}>
-              {body.stats.map((s, i) => (
-                <div key={i}>
-                  <p style={{ fontSize: 56, fontWeight: 700, color: '#fff', lineHeight: 1, fontFamily: 'var(--font-inter), Inter, sans-serif', letterSpacing: '-0.03em' }}>{s.value}</p>
-                  <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{s.label}</p>
-                </div>
+        <section className="py-16 bg-on-background text-white">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {body.stats.map((s, i) => (
+              <div key={i}>
+                <p className="text-4xl font-headline font-black text-primary">{s.value}</p>
+                <p className="text-xs font-label uppercase tracking-widest text-white/60 mt-2">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* FAQ */}
+      {faqs.length > 0 && (
+        <section className="px-6 py-24 bg-surface">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-headline font-extrabold text-center mb-12">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              {faqs.map((f, i) => (
+                <details key={i} className="bg-surface-container-low rounded-2xl p-6 group">
+                  <summary className="font-headline font-bold text-on-background cursor-pointer flex justify-between items-center list-none">
+                    {f.q}
+                    <span className="material-symbols-outlined text-primary group-open:rotate-45 transition-transform">add</span>
+                  </summary>
+                  <p className="text-secondary mt-4 leading-relaxed">{f.a}</p>
+                </details>
               ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* CASE STUDY PREVIEWS */}
-      <section style={{ padding: '100px 0' }}>
-        <div className="container-site">
-          <div style={{ textAlign: 'center', marginBottom: 48 }}>
-            <span className="section-label">PROOF</span>
-            <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 700 }}>Recent client wins</h2>
-          </div>
-          <div className="grid-2">
-            {[
-              { title: 'D2C Footwear Brand', metric: '40% RTO reduction', desc: 'Custom checkout flow + COD validation cut RTO from 40% to 24% in 90 days.' },
-              { title: 'B2B SaaS Co.', metric: '+47% conversion', desc: 'Funnel rebuild and onboarding optimisation lifted trial-to-paid by nearly half.' },
-            ].map((c, i) => (
-              <Link key={i} href="/case-studies" style={{ textDecoration: 'none' }}>
-                <div className="bento-card" style={{ background: 'var(--color-surface)', padding: 0 }}>
-                  <div style={{
-                    aspectRatio: '16/9',
-                    background: i === 0 ? 'var(--gradient-brand)' : 'var(--color-header)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#fff',
-                    fontSize: 32,
-                    fontWeight: 700,
-                  }}>
-                    {c.metric}
-                  </div>
-                  <div style={{ padding: 28 }}>
-                    <h3 style={{ fontSize: 22, fontWeight: 600, marginBottom: 8 }}>{c.title}</h3>
-                    <p style={{ fontSize: 14, color: 'var(--color-body)', lineHeight: 1.6 }}>{c.desc}</p>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      {faqs.length > 0 && (
-        <section className="section-surface">
-          <div className="container-site" style={{ maxWidth: 800 }}>
-            <div style={{ textAlign: 'center', marginBottom: 48 }}>
-              <span className="section-label">FAQ</span>
-              <h2 style={{ fontSize: 'clamp(28px, 3.5vw, 42px)', fontWeight: 700 }}>Frequently asked questions</h2>
-            </div>
-            {faqs.map((f, i) => (
-              <details key={i} className="faq-item">
-                <summary className="faq-question">
-                  {f.q}
-                  <span style={{ color: 'var(--color-accent)', fontSize: 24, fontWeight: 300 }}>+</span>
-                </summary>
-                <p className="faq-answer">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* CTA BANNER */}
-      <section style={{ padding: '100px 0' }}>
-        <div className="container-site">
-          <div style={{
-            background: 'var(--gradient-brand)',
-            borderRadius: 30,
-            padding: '80px 40px',
-            textAlign: 'center',
-            color: '#fff',
-          }}>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 700, color: '#fff', marginBottom: 16 }}>
-              {body.cta_text || `Ready to scale your ${page.service?.name || 'business'}?`}
-            </h2>
-            <p style={{ fontSize: 17, color: 'rgba(255,255,255,0.85)', marginBottom: 32, maxWidth: 580, margin: '0 auto 32px' }}>
-              Book a free 30-minute strategy call. We&apos;ll review your funnel and show you the highest-impact opportunities.
-            </p>
-            <Link href="/contact" style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '14px 32px',
-              borderRadius: 100,
-              background: '#fff',
-              color: 'var(--color-header)',
-              fontWeight: 500,
-              fontSize: 15,
-              textDecoration: 'none',
-              fontFamily: 'var(--font-inter), Inter, sans-serif',
-            }}>
-              Book a strategy call →
+      {/* CTA */}
+      <section className="py-24 px-6">
+        <div className="max-w-5xl mx-auto kinetic-gradient rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl">
+          <div className="absolute -top-12 -left-12 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+          <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
+          <div className="relative z-10">
+            <h2 className="text-3xl md:text-5xl font-headline font-black mb-6">{body.cta_text || `Ready to scale your ${page.service?.name || 'business'}?`}</h2>
+            <p className="text-white/80 mb-8 max-w-lg mx-auto">Book a free 30-minute strategy call. We&apos;ll review your funnel and show you the highest-impact opportunities.</p>
+            <Link href="/contact" className="bg-white text-primary px-10 py-5 rounded-full font-headline font-black text-xl hover:scale-105 transition-transform shadow-lg inline-block">
+              Book a strategy call
             </Link>
           </div>
         </div>

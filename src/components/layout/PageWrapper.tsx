@@ -5,7 +5,7 @@ export function PageWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main style={{ paddingTop: 80, minHeight: '60vh' }}>{children}</main>
+      <main className="pt-20 pb-16 md:pb-0 min-h-[60vh]">{children}</main>
       <Footer />
     </>
   )
