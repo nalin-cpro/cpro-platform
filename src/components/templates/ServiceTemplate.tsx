@@ -2,116 +2,159 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-// ─── types ─────────────────────────────────────────────────────────────────
-interface Feature { title: string; desc: string; icon?: string }
-interface Stat    { value: string; label: string }
-interface Section { heading: string; body: string; bullets?: string[] }
-interface FAQ     { q: string; a: string }
-interface CasePreview { tag: string; headline: string; desc: string }
-
-interface ServiceBody {
-  hero_subtitle?: string
-  features?: Feature[]
-  stats?: Stat[]
-  sections?: Section[]
-  faq?: FAQ[]
-  case_studies?: CasePreview[]
-  cta_text?: string
-}
-
-// ─── defaults (shown when bodyJson fields are missing) ─────────────────────
-const defaultFeatures: Feature[] = [
-  { title: 'Full funnel audit',  desc: 'Deconstructing every touchpoint from first click to repeat purchase.', icon: 'analytics' },
-  { title: 'Heatmap analysis',   desc: 'Visualising user behaviour to eliminate friction points in the UX.', icon: 'map' },
-  { title: 'A/B testing',        desc: 'Rigorous scientific testing of creative, copy, and landing pages.', icon: 'science' },
-  { title: 'Monthly reporting',  desc: 'Transparent, data-rich dashboards that focus on your bottom line.', icon: 'bar_chart_4_bars' },
-]
-
-const defaultStats: Stat[] = [
-  { value: '+47%', label: 'Avg CVR Lift' },
-  { value: '90d',  label: 'Time to Result' },
-  { value: '+150', label: 'Clients Served' },
-  { value: '98%',  label: 'Retention Rate' },
-]
-
-const defaultAdvantage: Section[] = [
-  { heading: 'Data-driven approach',  body: 'We bypass gut feelings. Every decision is backed by statistical significance and historical performance modelling.' },
-  { heading: 'Fast time to value',    body: 'Our sprint-based methodology ensures you see tangible conversion improvements within the first 30 days of implementation.' },
-  { heading: 'Embedded partnership',   body: 'We operate as an extension of your team, with direct access and strategic alignment with your growth leads.' },
-]
-
-const defaultCaseStudies: CasePreview[] = [
-  { tag: 'D2C Footwear',  headline: '40% RTO reduction in 60 days.', desc: 'Optimised sizing guides and post-purchase email flows reduced logistics drag significantly.' },
-  { tag: 'B2B SaaS',      headline: '+47% conversion on free trial.',  desc: 'Total overhaul of landing page messaging and social proof placement for a major CRM provider.' },
-]
-
-const featureIcons = ['analytics', 'map', 'science', 'bar_chart_4_bars']
-const statColors  = ['text-primary', 'text-on-surface', 'text-on-surface', 'text-tertiary']
-
-// ─── component ─────────────────────────────────────────────────────────────
-export function ServiceTemplate({ page }: {
+interface Props {
   page: {
     title: string
+    metaDesc?: string | null
     h1?: string | null
-    bodyJson: ServiceBody | null
-    service?: { name: string } | null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    bodyJson?: any
+    service?: { name: string; cluster: string; slug: string } | null
+    location?: { city: string; state: string } | null
   }
-}) {
-  const body       = page.bodyJson || {}
-  const features   = body.features?.length   ? body.features   : defaultFeatures
-  const stats      = body.stats?.length      ? body.stats      : defaultStats
-  const advantage  = body.sections?.length   ? body.sections   : defaultAdvantage
-  const faqs       = body.faq || []
-  const caseStudies = body.case_studies?.length ? body.case_studies : defaultCaseStudies
-  const heroBullets = body.sections?.[0]?.bullets
+}
 
-  const serviceName = page.service?.name || page.title.split('|')[0].trim()
+export function ServiceTemplate({ page }: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const body = page.bodyJson as Record<string, any> | null
+  const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const svcName = page.service?.name || page.title
+  const city = page.location?.city
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const offerCards: any[] = body?.offer_cards || body?.features || [
+    { icon: 'analytics', title: 'Full funnel audit', desc: 'Deconstructing every touchpoint from first click to repeat purchase.' },
+    { icon: 'map', title: 'Heatmap analysis', desc: 'Visualising user behaviour to eliminate friction points in the UX.' },
+    { icon: 'science', title: 'A/B testing', desc: 'Rigorous scientific testing of creative, copy, and landing pages.' },
+    { icon: 'bar_chart_4_bars', title: 'Monthly reporting', desc: 'Transparent, data-rich dashboards that focus on your bottom line.' },
+  ]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stats: any[] = body?.stats || [
+    { number: '+47%', label: 'Avg CVR Lift', color: '#b72301' },
+    { number: '90d', label: 'Time to Result', color: '#0d1c32' },
+    { number: '+150', label: 'Clients Served', color: '#0d1c32' },
+    { number: '98%', label: 'Retention Rate', color: '#00677c' },
+  ]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const advantages: any[] = body?.advantages || body?.sections || [
+    { title: 'Data-driven approach', heading: 'Data-driven approach', desc: 'We bypass gut feelings. Every decision is backed by statistical significance and historical performance modelling.', body: 'We bypass gut feelings. Every decision is backed by statistical significance and historical performance modelling.' },
+    { title: 'Fast time to value', heading: 'Fast time to value', desc: 'Our sprint-based methodology ensures you see tangible improvements within the first 30 days of implementation.', body: 'Our sprint-based methodology ensures you see tangible improvements within the first 30 days of implementation.' },
+    { title: 'Embedded partnership', heading: 'Embedded partnership', desc: 'We operate as an extension of your team, with direct access and strategic alignment with your growth leads.', body: 'We operate as an extension of your team, with direct access and strategic alignment with your growth leads.' },
+  ]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const caseStudies: any[] = body?.case_studies || [
+    {
+      tag: svcName,
+      metric: '40% RTO reduction in 60 days.',
+      title: 'D2C Footwear Brand',
+      desc: 'Optimised sizing guides and post-purchase flows reduced logistics drag significantly.',
+      image_url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80',
+      tag_color: '#b72301',
+    },
+    {
+      tag: 'B2B SaaS',
+      metric: '+47% conversion on free trial.',
+      title: 'CRM Provider',
+      desc: 'Total overhaul of landing page messaging and social proof placement.',
+      image_url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80',
+      tag_color: '#00677c',
+    },
+  ]
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const faqs: any[] = body?.faq || [
+    { q: 'How long does it take to see results?', a: 'Most clients see initial data signals within 2 weeks. Meaningful conversion improvements typically show within 60–90 days. We set clear milestones from day one.' },
+    { q: 'Which platforms do you specialise in?', a: 'Google Ads, Meta (Facebook + Instagram), Amazon Advertising. We match the channel mix to your audience and margins.' },
+    { q: 'Do you require a long-term contract?', a: 'We work on a 3-month minimum engagement — enough time to run meaningful tests and show real results. After that, month-to-month.' },
+    { q: 'How do you charge for your services?', a: 'Monthly retainer based on scope — no hidden fees, no percentage-of-spend markups. Clear proposal within 48 hours of your call.' },
+  ]
+
+  const heroHeading = city
+    ? `${svcName} in ${city}`
+    : (body?.hero_heading || page.h1 || page.title)
+
+  const heroTag = city
+    ? `${svcName} · ${city}`
+    : (body?.hero_tag || svcName)
 
   return (
-    <>
+    <div style={{ fontFamily: 'var(--font-inter, "Inter", sans-serif)' }}>
+
       {/* ── HERO ── */}
-      <section className="relative pt-16 md:pt-24 pb-16 md:pb-24 px-4 md:px-8 overflow-hidden">
+      <section style={{
+        position: 'relative',
+        paddingTop: 80, paddingBottom: 80,
+        paddingLeft: 'clamp(16px, 4vw, 64px)',
+        paddingRight: 'clamp(16px, 4vw, 64px)',
+        overflow: 'hidden',
+        background: '#f9f9ff',
+      }}>
         {/* Dot grid */}
-        <div
-          className="absolute inset-0 z-0 opacity-10"
-          style={{ backgroundImage: 'radial-gradient(#b72301 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}
-        />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="max-w-3xl">
-            <span className="inline-block py-1 px-4 rounded-full bg-red-50 text-primary font-label text-xs font-bold tracking-widest uppercase mb-5">
-              {serviceName}
-            </span>
-            <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-on-surface mb-6 leading-[1.1]">
-              {page.h1 || <>{serviceName} <span className="text-primary">Services</span></>}
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.08,
+          backgroundImage: 'radial-gradient(#b72301 0.5px, transparent 0.5px)',
+          backgroundSize: '24px 24px',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          {/* Breadcrumb */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 20, fontSize: 12, color: '#94a3b8' }}>
+            <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none' }}>Home</Link>
+            <span>›</span>
+            <Link href="/digital-marketing" style={{ color: '#94a3b8', textDecoration: 'none' }}>Services</Link>
+            {page.service && <><span>›</span><span style={{ color: '#64748b' }}>{page.service.name}</span></>}
+            {city && <><span>›</span><span style={{ color: '#64748b' }}>{city}</span></>}
+          </div>
+
+          <div style={{ maxWidth: 720 }}>
+            <span style={{
+              display: 'inline-block', padding: '4px 14px',
+              borderRadius: 9999,
+              background: 'rgba(183,35,1,0.08)',
+              color: '#b72301',
+              fontSize: 11, fontWeight: 700, letterSpacing: '0.12em',
+              textTransform: 'uppercase', marginBottom: 20,
+            }}>{heroTag}</span>
+
+            <h1 style={{
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 'clamp(36px, 6vw, 68px)',
+              fontWeight: 800, color: '#0d1c32',
+              lineHeight: 1.1, letterSpacing: '-0.02em',
+              marginBottom: 20,
+            }}>
+              {heroHeading}{' '}
+              <span style={{ color: '#b72301' }}>Services</span>
             </h1>
-            <p className="text-lg md:text-xl text-on-surface-variant mb-8 leading-relaxed font-medium max-w-xl">
-              {body.hero_subtitle || `We engineer compounding growth for high-velocity brands using data attribution and behavioural psychology.`}
+
+            <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: '#515f78', lineHeight: 1.7, marginBottom: 32, maxWidth: 560 }}>
+              {body?.hero_subtext || body?.hero_subtitle || page.metaDesc || `We engineer compounding growth for ambitious ${svcName.toLowerCase()} clients using data-driven strategy and proven frameworks.`}
             </p>
 
-            {/* Optional hero bullet points from sections[0].bullets */}
-            {heroBullets && heroBullets.length > 0 && (
-              <ul className="space-y-2 mb-8 max-w-lg">
-                {heroBullets.map((b, i) => (
-                  <li key={i} className="flex items-center gap-3 text-on-surface font-medium">
-                    <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/contact"
-                className="bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-full font-bold text-base md:text-lg shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 no-underline"
-              >
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
+              <Link href="/contact" style={{
+                background: 'linear-gradient(135deg, #b72301, #ff5733)',
+                color: '#ffffff',
+                padding: '14px 28px',
+                borderRadius: 9999,
+                fontWeight: 700, fontSize: 15,
+                textDecoration: 'none',
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                boxShadow: '0 8px 24px rgba(183,35,1,0.3)',
+              }}>
                 Get a free audit
-                <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>
-              <Link
-                href="/case-studies"
-                className="bg-white border border-slate-200 text-on-surface px-8 py-4 rounded-full font-bold text-base md:text-lg hover:bg-slate-50 transition-all text-center no-underline"
-              >
+              <Link href="/case-studies" style={{
+                background: '#ffffff', border: '1px solid #e2e8f0',
+                color: '#0d1c32', padding: '14px 28px',
+                borderRadius: 9999, fontWeight: 700, fontSize: 15,
+                textDecoration: 'none',
+              }}>
                 See case studies
               </Link>
             </div>
@@ -119,25 +162,37 @@ export function ServiceTemplate({ page }: {
         </div>
       </section>
 
-      {/* ── WHAT WE OFFER — dark section ── */}
-      <section className="bg-slate-900 py-20 md:py-32 px-4 md:px-8 text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-20 items-end mb-12 md:mb-20">
+      {/* ── OUTCOMES — dark section ── */}
+      <section style={{ background: '#0f172a', padding: 'clamp(48px, 8vw, 96px) clamp(16px, 4vw, 64px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'flex-end', marginBottom: 56 }}>
             <div>
-              <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 md:mb-6">Outcomes-first approach.</h2>
-              <p className="text-slate-400 text-base md:text-lg">We don&apos;t just run ads — we architect ecosystems that convert traffic into loyal revenue streams.</p>
+              <h2 style={{
+                fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+                fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700,
+                color: '#ffffff', letterSpacing: '-0.02em', marginBottom: 12,
+              }}>Outcomes-first approach.</h2>
+              <p style={{ color: '#94a3b8', fontSize: 16 }}>We don&apos;t just run campaigns — we architect systems that convert traffic into loyal revenue.</p>
             </div>
-            <div className="h-px bg-slate-800 w-full" />
+            <div style={{ height: 1, background: '#1e293b', width: 200, alignSelf: 'center' }} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8">
-            {features.slice(0, 4).map((f, i) => (
-              <div key={i} className="p-6 md:p-8 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:bg-slate-800 transition-all group">
-                <span className="material-symbols-outlined text-primary text-3xl md:text-4xl mb-4 md:mb-6 block group-hover:scale-110 transition-transform">
-                  {f.icon || featureIcons[i] || 'check_circle'}
-                </span>
-                <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">{f.title}</h3>
-                <p className="text-slate-400 leading-relaxed text-sm md:text-base">{f.desc}</p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: 20,
+          }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {offerCards.map((card: any, i: number) => (
+              <div key={i} style={{
+                padding: 'clamp(20px, 3vw, 32px)',
+                borderRadius: 14,
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+              }}>
+                <span className="ms" style={{ fontSize: 36, color: '#b72301', display: 'block', marginBottom: 16 }}>{card.icon}</span>
+                <h3 style={{ fontFamily: 'var(--font-jakarta)', fontSize: 18, fontWeight: 700, color: '#ffffff', marginBottom: 10, marginTop: 0 }}>{card.title}</h3>
+                <p style={{ color: '#94a3b8', fontSize: 14, lineHeight: 1.65 }}>{card.desc}</p>
               </div>
             ))}
           </div>
@@ -145,63 +200,102 @@ export function ServiceTemplate({ page }: {
       </section>
 
       {/* ── STATS ── */}
-      <section className="py-16 md:py-24 px-4 md:px-8 bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-slate-200 rounded-2xl md:rounded-3xl overflow-hidden border border-slate-200">
-            {stats.slice(0, 4).map((s, i) => (
-              <div key={i} className="bg-white p-8 md:p-12 text-center transition-colors hover:bg-surface-container-low cursor-default">
-                <div className={`text-4xl sm:text-5xl md:text-6xl font-headline font-black mb-2 ${statColors[i] || 'text-on-surface'}`}>
-                  {s.value}
-                </div>
-                <div className="text-xs font-label uppercase tracking-widest text-on-surface-variant font-bold">{s.label}</div>
+      <section style={{ padding: 'clamp(32px, 6vw, 64px) clamp(16px, 4vw, 64px)', background: '#f9f9ff' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 1, background: '#e2e8f0',
+            borderRadius: 20, overflow: 'hidden',
+            border: '1px solid #e2e8f0',
+          }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {stats.map((s: any, i: number) => (
+              <div key={i} style={{
+                background: '#ffffff', padding: 'clamp(24px, 4vw, 48px)',
+                textAlign: 'center',
+              }}>
+                <div style={{
+                  fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+                  fontSize: 'clamp(36px, 6vw, 56px)', fontWeight: 800,
+                  color: s.color || '#0d1c32', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 8,
+                }}>{s.number || s.value}</div>
+                <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#94a3b8' }}>{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── THE CONVERSIONPRO ADVANTAGE ── */}
-      <section className="py-20 md:py-32 px-4 md:px-8 bg-surface-container-low">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 md:mb-20">
-            <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">The ConversionPro Advantage</h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto text-base md:text-lg font-medium">Why we consistently outperform standard digital agencies.</p>
+      {/* ── ADVANTAGES ── */}
+      <section style={{ padding: 'clamp(48px, 8vw, 96px) clamp(16px, 4vw, 64px)', background: '#f0f3ff' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(32px, 5vw, 64px)' }}>
+            <h2 style={{
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 'clamp(26px, 4vw, 40px)', fontWeight: 700,
+              color: '#0d1c32', letterSpacing: '-0.02em', marginBottom: 12,
+            }}>The ConversionPro Advantage</h2>
+            <p style={{ color: '#515f78', fontSize: 16, maxWidth: 480, margin: '0 auto' }}>Why we consistently outperform standard digital agencies.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-12">
-            {advantage.slice(0, 3).map((s, i) => (
-              <div key={i} className="p-7 md:p-10 bg-surface rounded-2xl border-b-4 border-primary shadow-sm">
-                <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{s.heading}</h3>
-                <p className="text-on-surface-variant leading-relaxed text-sm md:text-base">{s.body}</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {advantages.map((a: any, i: number) => (
+              <div key={i} style={{
+                padding: 'clamp(24px, 3vw, 36px)',
+                background: '#ffffff',
+                borderRadius: 20,
+                borderBottom: '4px solid #b72301',
+                boxShadow: '0 4px 20px rgba(13,28,50,0.04)',
+              }}>
+                <h3 style={{ fontFamily: 'var(--font-jakarta)', fontSize: 20, fontWeight: 700, color: '#0d1c32', marginBottom: 12, marginTop: 0 }}>{a.title || a.heading}</h3>
+                <p style={{ color: '#515f78', lineHeight: 1.7, fontSize: 15 }}>{a.desc || a.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── RECENT CLIENT WINS ── */}
-      <section className="py-20 md:py-32 px-4 md:px-8 bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-10 md:mb-16">Recent Client Wins</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
-            {caseStudies.slice(0, 2).map((cs, i) => (
-              <Link key={i} href="/case-studies" className="no-underline">
-                <div className="group flex flex-col sm:flex-row bg-surface-container rounded-2xl md:rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-500">
-                  {/* Placeholder image (gradient) */}
-                  <div className="w-full sm:w-1/2 overflow-hidden h-60">
-                    <div className={`w-full h-full flex items-center justify-center text-white text-6xl transition-transform duration-700 group-hover:scale-[1.08] ${i === 0 ? 'bg-gradient-to-br from-primary to-primary-container' : 'bg-slate-800'}`}>
-                      <span className="material-symbols-outlined text-6xl opacity-30">{i === 0 ? 'shopping_bag' : 'hub'}</span>
+      {/* ── CASE STUDIES ── */}
+      <section style={{ padding: 'clamp(48px, 8vw, 96px) clamp(16px, 4vw, 64px)', background: '#f9f9ff' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+            fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700,
+            color: '#0d1c32', letterSpacing: '-0.02em', marginBottom: 'clamp(28px, 4vw, 48px)',
+          }}>Recent Client Wins</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {caseStudies.map((cs: any, i: number) => (
+              <Link key={i} href="/case-studies" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#e8eeff', borderRadius: 24,
+                  overflow: 'hidden',
+                  display: 'flex', flexDirection: 'column',
+                }}>
+                  {/* Image */}
+                  {cs.image_url && (
+                    <div style={{ height: 220, overflow: 'hidden' }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={cs.image_url} alt={cs.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
-                  </div>
-                  <div className="p-7 md:p-10 flex flex-col justify-center w-full sm:w-1/2">
-                    <span className={`text-xs font-label uppercase tracking-widest font-bold mb-3 ${i === 0 ? 'text-primary' : 'text-tertiary'}`}>
-                      {cs.tag}
-                    </span>
-                    <h3 className="text-2xl md:text-3xl font-black mb-4 md:mb-6 leading-tight text-on-surface">{cs.headline}</h3>
-                    <p className="text-on-surface-variant mb-6 md:mb-8 font-medium text-sm md:text-base">{cs.desc}</p>
-                    <span className="text-on-surface font-bold flex items-center gap-2 group-hover:text-primary transition-colors text-sm md:text-base">
+                  )}
+                  {/* Content */}
+                  <div style={{ padding: 28 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
+                      letterSpacing: '0.1em', color: cs.tag_color || '#b72301',
+                      display: 'block', marginBottom: 10,
+                    }}>{cs.tag}</span>
+                    <h3 style={{
+                      fontFamily: 'var(--font-jakarta)', fontSize: 24,
+                      fontWeight: 800, color: '#0d1c32', marginBottom: 12, marginTop: 0,
+                      lineHeight: 1.2,
+                    }}>{cs.metric || cs.headline}</h3>
+                    <p style={{ fontSize: 14, color: '#515f78', lineHeight: 1.6, marginBottom: 18 }}>{cs.desc}</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: '#0d1c32' }}>
                       Read Full Case Study
-                      <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform text-xl">arrow_right_alt</span>
-                    </span>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -211,69 +305,105 @@ export function ServiceTemplate({ page }: {
       </section>
 
       {/* ── FAQ ── */}
-      {faqs.length > 0 && <FAQSection faqs={faqs} />}
+      <section style={{ padding: 'clamp(48px, 8vw, 96px) clamp(16px, 4vw, 64px)', background: '#f0f3ff' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <h2 style={{
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 700,
+              color: '#0d1c32', letterSpacing: '-0.02em', marginBottom: 10,
+            }}>Common Questions</h2>
+            <p style={{ color: '#515f78', fontSize: 15 }}>Everything you need to know about our process.</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {faqs.map((faq: any, i: number) => (
+              <div key={i} style={{
+                background: '#ffffff', borderRadius: 16,
+                border: '1px solid #e2e8f0',
+                overflow: 'hidden',
+                boxShadow: '0 2px 8px rgba(13,28,50,0.04)',
+              }}>
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{
+                  width: '100%', textAlign: 'left',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  padding: 'clamp(16px, 3vw, 24px)',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16,
+                  fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+                  fontSize: 'clamp(14px, 2vw, 17px)', fontWeight: 700, color: '#0d1c32',
+                }}>
+                  <span>{faq.q}</span>
+                  <div style={{
+                    width: 28, height: 28, borderRadius: '50%',
+                    border: '1.5px solid #e2e8f0',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, fontSize: 18, fontWeight: 300,
+                    color: openFaq === i ? '#b72301' : '#64748b',
+                    borderColor: openFaq === i ? '#b72301' : '#e2e8f0',
+                    transition: 'all 0.2s ease',
+                  }}>
+                    {openFaq === i ? '−' : '+'}
+                  </div>
+                </button>
+                {openFaq === i && (
+                  <div style={{
+                    padding: '0 clamp(16px, 3vw, 24px) clamp(16px, 3vw, 24px)',
+                    fontSize: 15, color: '#515f78', lineHeight: 1.75,
+                  }}>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── CTA ── */}
-      <section className="py-16 md:py-24 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="rounded-[2rem] md:rounded-[3rem] bg-gradient-to-br from-primary to-primary-container p-8 sm:p-12 md:p-24 text-center text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-white/10 rounded-full blur-3xl -mr-32 md:-mr-48 -mt-32 md:-mt-48 pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="font-headline text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 md:mb-8 leading-tight">
-                {body.cta_text || <>Ready to scale your<br className="hidden sm:block" /> {serviceName}?</>}
+      <section style={{ padding: 'clamp(32px, 6vw, 64px) clamp(16px, 4vw, 64px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{
+            borderRadius: 'clamp(24px, 4vw, 48px)',
+            background: 'linear-gradient(135deg, #b72301 0%, #ff5733 100%)',
+            padding: 'clamp(40px, 6vw, 80px) clamp(24px, 5vw, 96px)',
+            textAlign: 'center', position: 'relative', overflow: 'hidden',
+            boxShadow: '0 20px 60px rgba(183,35,1,0.3)',
+          }}>
+            <div style={{
+              position: 'absolute', top: -80, right: -80,
+              width: 280, height: 280, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.08)', filter: 'blur(40px)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <h2 style={{
+                fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+                fontSize: 'clamp(28px, 5vw, 52px)', fontWeight: 800,
+                color: '#ffffff', letterSpacing: '-0.02em',
+                marginBottom: 16, lineHeight: 1.15,
+              }}>
+                {body?.cta_heading || body?.cta_text || `Ready to scale your ${svcName}?`}
               </h2>
-              <p className="text-base md:text-xl mb-8 md:mb-12 opacity-90 max-w-2xl mx-auto leading-relaxed">
-                Stop guessing. Start growing. Let our data-driven growth engine find your missing revenue.
+              <p style={{ fontSize: 'clamp(14px, 2vw, 18px)', color: 'rgba(255,255,255,0.88)', maxWidth: 520, margin: '0 auto 32px', lineHeight: 1.7 }}>
+                {body?.cta_subtext || 'Stop guessing. Start growing. Let our data-driven growth engine find your missing revenue.'}
               </p>
-              <Link
-                href="/contact"
-                className="inline-block bg-white text-primary px-8 md:px-12 py-4 md:py-5 rounded-full font-black text-base md:text-xl hover:scale-105 transition-all shadow-2xl no-underline"
-              >
+              <Link href="/contact" style={{
+                display: 'inline-block',
+                background: '#ffffff', color: '#b72301',
+                padding: 'clamp(12px, 2vw, 18px) clamp(24px, 4vw, 48px)',
+                borderRadius: 9999,
+                fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+                fontWeight: 800, fontSize: 'clamp(14px, 2vw, 18px)',
+                textDecoration: 'none',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+              }}>
                 Talk to Us
               </Link>
             </div>
           </div>
         </div>
       </section>
-    </>
-  )
-}
 
-// ─── FAQ sub-component (client-side accordion) ─────────────────────────────
-function FAQSection({ faqs }: { faqs: FAQ[] }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-
-  return (
-    <section className="py-20 md:py-32 px-4 md:px-8 bg-surface-container-low">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12 md:mb-20">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-4">Common Questions</h2>
-          <p className="text-on-surface-variant text-sm md:text-base">Everything you need to know about our process.</p>
-        </div>
-        <div className="space-y-3 md:space-y-4">
-          {faqs.map((faq, i) => {
-            const isOpen = openIndex === i
-            return (
-              <div key={i} className="bg-surface rounded-xl md:rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <button
-                  className="w-full flex justify-between items-center text-left p-5 md:p-6 gap-4"
-                  onClick={() => setOpenIndex(isOpen ? null : i)}
-                >
-                  <span className="text-base md:text-lg font-bold text-on-surface">{faq.q}</span>
-                  <span className="material-symbols-outlined flex-shrink-0 text-slate-400">
-                    {isOpen ? 'remove' : 'add'}
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="px-5 md:px-6 pb-5 md:pb-6 text-on-surface-variant text-sm md:text-base leading-relaxed">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </section>
+    </div>
   )
 }

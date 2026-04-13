@@ -1,59 +1,107 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const navItems: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
+const navItems = [
   { label: 'Home', href: '/' },
   {
-    label: 'Services',
+    label: 'Capabilities',
     href: '/digital-marketing',
     children: [
       { label: 'Digital Marketing', href: '/digital-marketing' },
       { label: 'CRO', href: '/cro' },
-      { label: 'Marketplaces', href: '/marketplaces' },
-      { label: 'Zoho Services', href: '/zoho' },
+      { label: 'Marketplace Management', href: '/marketplaces' },
+      { label: 'Zoho One', href: '/zoho' },
       { label: 'Web Development', href: '/development' },
     ],
   },
-  { label: 'Case Studies', href: '/case-studies' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Insights', href: '/blog' },
+  { label: 'About', href: '/about' },
 ]
 
 export default function Header() {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [scrolled, setScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [dropdown, setDropdown] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
-      {/* Desktop / tablet top bar */}
-      <nav className="fixed top-0 w-full z-50 glass-header shadow-sm">
-        <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-2xl">bolt</span>
-            <span className="text-xl font-black tracking-tighter text-on-background font-headline">CONVERSIONPRO</span>
+      <header style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        background: scrolled ? 'rgba(249,249,255,0.92)' : 'rgba(249,249,255,0.8)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        boxShadow: scrolled ? '0 1px 24px rgba(13,28,50,0.08)' : 'none',
+        transition: 'all 0.3s ease',
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+      }}>
+        <nav style={{
+          maxWidth: 1280, margin: '0 auto',
+          padding: '0 24px', height: 64,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+
+          {/* Logo */}
+          <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <span style={{
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 20, fontWeight: 800, color: '#0d1c32',
+              letterSpacing: '-0.03em',
+            }}>
+              Conversion<span style={{ color: '#b72301' }}>Pro</span>
+            </span>
           </Link>
 
-          <div className="hidden md:flex gap-8 items-center">
+          {/* Desktop nav */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="desktop-nav">
             {navItems.map(item => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => item.children && setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+              <div key={item.label} style={{ position: 'relative' }}
+                onMouseEnter={() => item.children && setDropdown(true)}
+                onMouseLeave={() => item.children && setDropdown(false)}
               >
-                <Link
-                  href={item.href}
-                  className="text-secondary font-medium hover:text-primary transition-colors"
+                <Link href={item.href} style={{
+                  fontFamily: 'var(--font-inter, "Inter", sans-serif)',
+                  fontSize: 14, fontWeight: 500,
+                  color: '#475569', textDecoration: 'none',
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  transition: 'color 0.2s ease',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#b72301')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#475569')}
                 >
                   {item.label}
+                  {item.children && (
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
                 </Link>
-                {item.children && activeDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-surface-container-lowest border border-outline-variant/10 rounded-2xl shadow-card-hover py-2 z-50">
+
+                {/* Dropdown */}
+                {item.children && dropdown && (
+                  <div style={{
+                    position: 'absolute', top: '100%', left: 0,
+                    background: '#ffffff', borderRadius: 16,
+                    padding: '8px', minWidth: 220,
+                    boxShadow: '0 8px 40px rgba(13,28,50,0.12)',
+                    border: '1px solid rgba(0,0,0,0.06)',
+                    marginTop: 8,
+                  }}>
                     {item.children.map(child => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block px-5 py-2.5 text-sm font-medium text-on-background hover:text-primary hover:bg-surface-container-low transition-colors"
+                      <Link key={child.label} href={child.href} style={{
+                        display: 'block', padding: '10px 14px',
+                        fontSize: 14, fontWeight: 500,
+                        color: '#334155', textDecoration: 'none',
+                        borderRadius: 10, transition: 'background 0.15s ease',
+                      }}
+                      onMouseEnter={e => (e.currentTarget.style.background = '#f8fafc')}
+                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                       >
                         {child.label}
                       </Link>
@@ -64,29 +112,89 @@ export default function Header() {
             ))}
           </div>
 
-          <Link
-            href="/contact"
-            className="bg-primary text-on-primary px-5 py-2 rounded-full font-headline font-bold text-sm tracking-tight hover:scale-105 active:scale-95 transition-all shadow-md"
-          >
-            GET AUDIT
-          </Link>
-        </div>
-      </nav>
+          {/* CTA + hamburger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <Link href="/contact" style={{
+              background: '#b72301',
+              color: '#ffffff',
+              padding: '9px 22px',
+              borderRadius: 9999,
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 14, fontWeight: 700,
+              textDecoration: 'none',
+              transition: 'background 0.2s ease, transform 0.15s ease',
+              display: 'inline-block',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#ff5733'; e.currentTarget.style.transform = 'scale(1.03)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#b72301'; e.currentTarget.style.transform = 'scale(1)'; }}
+            >
+              Talk to Us
+            </Link>
 
-      {/* Mobile bottom nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 glass-header border-t border-outline-variant/10 px-6 py-3 flex justify-between items-center z-50">
-        {[
-          { label: 'Home',     icon: 'home',      href: '/' },
-          { label: 'Services', icon: 'grid_view',  href: '/digital-marketing' },
-          { label: 'Work',     icon: 'work',       href: '/case-studies' },
-          { label: 'Contact',  icon: 'chat',       href: '/contact' },
-        ].map(item => (
-          <Link key={item.label} href={item.href} className="flex flex-col items-center gap-1 text-secondary hover:text-primary transition-colors">
-            <span className="material-symbols-outlined">{item.icon}</span>
-            <span className="text-[10px] font-bold uppercase tracking-tighter">{item.label}</span>
-          </Link>
-        ))}
-      </div>
+            {/* Hamburger — mobile only */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="mobile-only"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+              aria-label="Menu"
+            >
+              <div style={{ width: 22, height: 2, background: '#334155', marginBottom: 5, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: '#334155', marginBottom: 5, borderRadius: 2 }} />
+              <div style={{ width: 22, height: 2, background: '#334155', borderRadius: 2 }} />
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div style={{
+            background: '#ffffff',
+            borderTop: '1px solid #f1f5f9',
+            padding: '12px 24px 24px',
+          }}>
+            {navItems.map(item => (
+              <div key={item.label}>
+                <Link href={item.href} onClick={() => setMobileOpen(false)} style={{
+                  display: 'block', padding: '13px 0',
+                  fontSize: 15, fontWeight: 500, color: '#334155',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid #f1f5f9',
+                }}>
+                  {item.label}
+                </Link>
+                {item.children && item.children.map(child => (
+                  <Link key={child.label} href={child.href} onClick={() => setMobileOpen(false)} style={{
+                    display: 'block', padding: '10px 0 10px 16px',
+                    fontSize: 13, fontWeight: 400, color: '#64748b',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid #f8fafc',
+                  }}>
+                    {child.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+            <Link href="/contact" onClick={() => setMobileOpen(false)} style={{
+              display: 'block', textAlign: 'center',
+              background: '#b72301', color: '#ffffff',
+              padding: '13px', borderRadius: 9999,
+              fontWeight: 700, fontSize: 14,
+              textDecoration: 'none', marginTop: 16,
+            }}>
+              Talk to Us
+            </Link>
+          </div>
+        )}
+      </header>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .mobile-only { display: none !important; }
+        }
+        @media (max-width: 767px) {
+          .desktop-nav { display: none !important; }
+        }
+      `}</style>
     </>
   )
 }

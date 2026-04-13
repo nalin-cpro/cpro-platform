@@ -2,49 +2,104 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-16 px-6 md:px-10">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-        <div className="flex flex-col gap-6 md:w-1/3">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-2xl">bolt</span>
-            <span className="text-lg font-black text-white font-headline">CONVERSIONPRO</span>
-          </Link>
-          <p className="text-slate-400 text-sm leading-relaxed">
-            Pune&apos;s leading conversion-focused agency helping brands scale profitably through UX, CRO, and performance marketing.
-          </p>
-          <div className="flex gap-4">
-            <a href="https://linkedin.com/company/conversionpro" target="_blank" rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <span className="material-symbols-outlined text-sm">share</span>
-            </a>
-            <a href="https://instagram.com/conversionprollp" target="_blank" rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <span className="material-symbols-outlined text-sm">hub</span>
-            </a>
+    <footer style={{ background: '#0f172a', padding: '64px 24px 32px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          gap: 40, marginBottom: 48,
+        }}>
+
+          {/* Brand */}
+          <div style={{ gridColumn: 'span 1' }}>
+            <div style={{
+              fontFamily: 'var(--font-jakarta, "Plus Jakarta Sans", sans-serif)',
+              fontSize: 18, fontWeight: 800, color: '#ffffff',
+              letterSpacing: '-0.02em', marginBottom: 14,
+            }}>
+              Conversion<span style={{ color: '#f97316' }}>Pro</span> LLP
+            </div>
+            <p style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.7, maxWidth: 220 }}>
+              Pune&apos;s leading CRO and digital marketing agency. Data-obsessed, result-driven.
+            </p>
+            <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+              <a href="https://linkedin.com/company/conversionpro" target="_blank" rel="noopener noreferrer" style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.08)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                textDecoration: 'none', color: '#94a3b8',
+                fontSize: 12, fontWeight: 700, transition: 'background 0.2s ease',
+              }}>in</a>
+              <a href="https://instagram.com/conversionprollp" target="_blank" rel="noopener noreferrer" style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.08)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                textDecoration: 'none', color: '#94a3b8',
+                fontSize: 12, fontWeight: 700, transition: 'background 0.2s ease',
+              }}>ig</a>
+            </div>
           </div>
+
+          {/* Capabilities */}
+          <div>
+            <h4 style={{ fontSize: 12, fontWeight: 700, color: '#f97316', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>Capabilities</h4>
+            {[
+              { label: 'Digital Marketing', href: '/digital-marketing' },
+              { label: 'CRO', href: '/cro' },
+              { label: 'Marketplaces', href: '/marketplaces' },
+              { label: 'Zoho One', href: '/zoho' },
+              { label: 'Web Development', href: '/development' },
+            ].map(l => (
+              <Link key={l.label} href={l.href} style={{ display: 'block', fontSize: 13, color: '#94a3b8', textDecoration: 'none', marginBottom: 10 }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 style={{ fontSize: 12, fontWeight: 700, color: '#f97316', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>Company</h4>
+            {[
+              { label: 'About Us', href: '/about' },
+              { label: 'Case Studies', href: '/case-studies' },
+              { label: 'Insights', href: '/blog' },
+              { label: 'Contact Us', href: '/contact' },
+            ].map(l => (
+              <Link key={l.label} href={l.href} style={{ display: 'block', fontSize: 13, color: '#94a3b8', textDecoration: 'none', marginBottom: 10 }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Cities */}
+          <div>
+            <h4 style={{ fontSize: 12, fontWeight: 700, color: '#f97316', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>Cities</h4>
+            {[
+              { label: 'Pune', href: '/cro/pune' },
+              { label: 'Mumbai', href: '/cro/mumbai' },
+              { label: 'Bangalore', href: '/cro/bangalore' },
+              { label: 'Delhi', href: '/cro/delhi' },
+              { label: 'Hyderabad', href: '/cro/hyderabad' },
+              { label: 'Chennai', href: '/cro/chennai' },
+            ].map(l => (
+              <Link key={l.label} href={l.href} style={{ display: 'block', fontSize: 13, color: '#94a3b8', textDecoration: 'none', marginBottom: 10 }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-12">
-          <div className="flex flex-col gap-4">
-            <p className="font-bold text-primary uppercase text-xs tracking-widest">Solutions</p>
-            <Link href="/cro" className="text-slate-400 hover:text-white transition-colors text-sm">CRO</Link>
-            <Link href="/digital-marketing" className="text-slate-400 hover:text-white transition-colors text-sm">Digital Marketing</Link>
-            <Link href="/marketplaces" className="text-slate-400 hover:text-white transition-colors text-sm">Marketplaces</Link>
-            <Link href="/zoho" className="text-slate-400 hover:text-white transition-colors text-sm">Zoho Services</Link>
-            <Link href="/development" className="text-slate-400 hover:text-white transition-colors text-sm">Web Development</Link>
-          </div>
-          <div className="flex flex-col gap-4">
-            <p className="font-bold text-primary uppercase text-xs tracking-widest">Company</p>
-            <Link href="/case-studies" className="text-slate-400 hover:text-white transition-colors text-sm">Case Studies</Link>
-            <Link href="/blog" className="text-slate-400 hover:text-white transition-colors text-sm">Blog</Link>
-            <Link href="/contact" className="text-slate-400 hover:text-white transition-colors text-sm">Contact Us</Link>
-          </div>
+        {/* Bottom bar */}
+        <div style={{
+          borderTop: '1px solid rgba(255,255,255,0.07)',
+          paddingTop: 24,
+          display: 'flex', flexWrap: 'wrap',
+          justifyContent: 'space-between', alignItems: 'center', gap: 8,
+        }}>
+          <p style={{ fontSize: 12, color: '#475569' }}>© {new Date().getFullYear()} ConversionPro LLP. All rights reserved.</p>
+          <p style={{ fontSize: 12, color: '#475569' }}>Made with precision in Pune.</p>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-xs">
-        <p>© {new Date().getFullYear()} ConversionPro LLP. All rights reserved.</p>
-        <p>Made with precision in Pune.</p>
       </div>
     </footer>
   )
