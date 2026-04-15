@@ -20,7 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const pages = await prisma.page.findMany({ where: { status: 'published' }, select: { slug: true } })
+  const pages = await prisma.page.findMany({
+    where: { status: 'published', NOT: { slug: '/' } },
+    select: { slug: true },
+  })
   return pages.map(p => ({ slug: p.slug.split('/') }))
 }
 

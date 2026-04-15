@@ -41,7 +41,8 @@ const gridStats = [
 
 const logos = ['ACME Co.', 'BrightCart', 'NorthStar', 'Plyform', 'Velura', 'Kindred', 'Lumio', 'Atrium']
 
-export function HomeTemplate({ page }: { page: { title: string; bodyJson: HomeBody | null } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function HomeTemplate({ page }: { page: { title: string; bodyJson?: HomeBody | any; [key: string]: any } }) {
   const body = page.bodyJson || {}
 
   return (
