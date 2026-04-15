@@ -31,6 +31,7 @@ export default function PageEditor({
   const [tab, setTab] = useState<'content' | 'seo' | 'layout'>('content')
   const [saving, setSaving] = useState(false)
   const [editing, setEditing] = useState(false)
+  const [rawHtml, setRawHtml] = useState(initial.layoutHtml || '')
 
   async function save(extra: Record<string, unknown> = {}) {
     setSaving(true)
@@ -186,23 +187,67 @@ export default function PageEditor({
             )}
           </div>
 
-          {/* Per-page override */}
-          {page.useLayout ? (
-            <div className="bg-green-50 border border-green-200 text-green-800 rounded-2xl p-5 flex justify-between items-center">
-              <div>
-                <p className="font-bold text-sm">Per-page override active</p>
-                <p className="text-xs text-green-700 mt-0.5">A custom GrapesJS layout overrides everything else for this specific page.</p>
-              </div>
-              <div className="flex gap-2">
-                <button onClick={() => setEditing(true)} className="text-xs font-bold text-green-800 underline">Edit override</button>
-                <button onClick={() => save({ useLayout: false })} className="text-xs font-bold text-green-800 underline">Remove override</button>
-              </div>
+          {/* ── Raw HTML editor ── */}
+          <div className="bg-white border border-ink-200 rounded-2xl p-6">
+            <h3 className="font-heading text-base font-bold text-ink-900 mb-1">Raw HTML</h3>
+            <p className="text-sm text-ink-600 mb-4">
+              Paste full-page HTML directly. This is the fastest way to apply a design — paste it, save, done.
+            </p>
+            <textarea
+              value={rawHtml}
+              onChange={e => setRawHtml(e.target.value)}
+              placeholder="Paste your HTML here..."
+              rows={18}
+              className="mt-1 w-full px-4 py-3 border border-ink-200 rounded-lg font-mono text-xs leading-relaxed bg-ink-100 focus:bg-white focus:border-brand-500 transition-colors"
+              spellCheck={false}
+            />
+            <div className="flex flex-wrap gap-3 mt-4">
+              <button
+                onClick={async () => {
+                  setSaving(true)
+                  const res = await fetch(`/api/admin/pages/${page.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ layoutHtml: rawHtml, useLayout: true }),
+                  })
+                  if (res.ok) {
+                    const updated = await res.json()
+                    setPage(updated)
+                  }
+                  setSaving(false)
+                }}
+                disabled={saving}
+                className="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-full text-sm uppercase tracking-wide disabled:opacity-60"
+              >
+                {saving ? 'Saving...' : 'Save HTML & enable override'}
+              </button>
+              {page.useLayout && (
+                <button
+                  onClick={() => save({ useLayout: false })}
+                  disabled={saving}
+                  className="px-5 py-2.5 border border-ink-200 hover:border-brand-500 text-ink-700 font-bold rounded-full text-sm disabled:opacity-60"
+                >
+                  Disable override
+                </button>
+              )}
             </div>
-          ) : (
+            {page.useLayout && (
+              <p className="text-xs text-green-700 mt-3">
+                ✓ Override is active — the HTML above is rendering on the live page.
+              </p>
+            )}
+          </div>
+
+          {/* ── GrapesJS drag-and-drop editor (alternative) ── */}
+          <div className="bg-white border border-ink-200 rounded-2xl p-6">
+            <h3 className="font-heading text-base font-bold text-ink-900 mb-1">Visual drag-and-drop editor</h3>
+            <p className="text-sm text-ink-600 mb-4">
+              Alternatively, use the GrapesJS visual editor to build or edit the layout with drag-and-drop.
+            </p>
             <button onClick={() => setEditing(true)} className="px-6 py-3 bg-white border-2 border-ink-200 hover:border-brand-500 text-ink-800 font-bold rounded-full uppercase tracking-wide text-sm">
-              Override for this page only
+              Open GrapesJS editor
             </button>
-          )}
+          </div>
         </div>
       )}
 
