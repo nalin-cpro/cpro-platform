@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
@@ -11,5 +12,8 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   delete body.createdAt
   delete body.updatedAt
   const updated = await prisma.page.update({ where: { id }, data: body })
+  // Bust ISR cache for this page
+  const path = updated.slug === '/' ? '/' : `/${updated.slug}`
+  revalidatePath(path)
   return NextResponse.json(updated)
 }
