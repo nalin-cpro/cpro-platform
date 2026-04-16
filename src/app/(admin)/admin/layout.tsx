@@ -2,10 +2,11 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { LayoutDashboard, FileText, Newspaper, Briefcase, Image, Sparkles, Settings, LogOut, Layers } from 'lucide-react'
+import { LayoutDashboard, Home, FileText, Newspaper, Briefcase, Image, Sparkles, Settings, LogOut, Layers } from 'lucide-react'
 
 const nav = [
   { label: 'Dashboard',    href: '/admin',              icon: LayoutDashboard },
+  { label: 'Homepage',     href: '/admin/homepage',     icon: Home },
   { label: 'Pages',        href: '/admin/pages',        icon: FileText },
   { label: 'Templates',    href: '/admin/templates',    icon: Layers },
   { label: 'Blog',         href: '/admin/blog',         icon: Newspaper },
