@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
 
-export const revalidate = 3600
+export const revalidate = 0
 
 export default async function CaseStudiesIndex() {
   const studies = await prisma.caseStudy.findMany({

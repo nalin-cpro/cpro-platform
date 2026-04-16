@@ -8,7 +8,7 @@ import { LocationTemplate } from '@/components/templates/LocationTemplate'
 import { HomeTemplate } from '@/components/templates/HomeTemplate'
 import { ContactTemplate } from '@/components/templates/ContactTemplate'
 
-export const revalidate = 86400
+export const revalidate = 0
 
 interface Props { params: { slug: string[] } }
 
