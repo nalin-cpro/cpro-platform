@@ -68,7 +68,7 @@ function MPPageContent() {
       <div className="breadcrumb">
         <Link href="/">Home</Link>
         <span className="breadcrumb-sep">›</span>
-        <Link href="/digital-marketing">Services</Link>
+        <span>Services</span>
         <span className="breadcrumb-sep">›</span>
         <span>Marketplace Management</span>
       </div>

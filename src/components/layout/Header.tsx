@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 const navItems = [
@@ -10,11 +10,12 @@ const navItems = [
     children: [
       { label: 'Digital Marketing', href: '/digital-marketing' },
       { label: 'CRO', href: '/cro' },
-      { label: 'Marketplace Management', href: '/marketplaces' },
+      { label: 'Marketplaces', href: '/marketplaces' },
       { label: 'Zoho One', href: '/zoho' },
       { label: 'Web Development', href: '/development' },
     ],
   },
+  { label: 'Case Studies', href: '/case-studies' },
   { label: 'Insights', href: '/blog' },
   { label: 'About', href: '/about' },
 ]
@@ -23,11 +24,24 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdown, setDropdown] = useState(false)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const openDropdown = () => {
+    if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null }
+    setDropdown(true)
+  }
+  const closeDropdown = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setDropdown(false), 150)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (closeTimer.current) clearTimeout(closeTimer.current)
+    }
   }, [])
 
   return (
@@ -62,8 +76,8 @@ export default function Header() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 32 }} className="desktop-nav">
             {navItems.map(item => (
               <div key={item.label} style={{ position: 'relative' }}
-                onMouseEnter={() => item.children && setDropdown(true)}
-                onMouseLeave={() => item.children && setDropdown(false)}
+                onMouseEnter={() => item.children && openDropdown()}
+                onMouseLeave={() => item.children && closeDropdown()}
               >
                 <Link href={item.href} style={{
                   fontFamily: 'var(--font-inter, "Inter", sans-serif)',
@@ -100,8 +114,8 @@ export default function Header() {
                         color: '#334155', textDecoration: 'none',
                         borderRadius: 10, transition: 'background 0.15s ease',
                       }}
-                      onMouseEnter={e => (e.currentTarget.style.background = '#f8fafc')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#fff3ee'; e.currentTarget.style.color = '#b72301' }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#334155' }}
                       >
                         {child.label}
                       </Link>
