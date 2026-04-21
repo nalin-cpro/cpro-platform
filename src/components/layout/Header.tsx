@@ -23,8 +23,14 @@ const navItems = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileSubOpen, setMobileSubOpen] = useState(false)
   const [dropdown, setDropdown] = useState(false)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const closeAllMobile = () => {
+    setMobileOpen(false)
+    setMobileSubOpen(false)
+  }
 
   const openDropdown = () => {
     if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null }
@@ -108,14 +114,16 @@ export default function Header() {
                     marginTop: 8,
                   }}>
                     {item.children.map(child => (
-                      <Link key={child.label} href={child.href} style={{
-                        display: 'block', padding: '10px 14px',
-                        fontSize: 14, fontWeight: 500,
-                        color: '#334155', textDecoration: 'none',
-                        borderRadius: 10, transition: 'background 0.15s ease',
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = '#fff3ee'; e.currentTarget.style.color = '#b72301' }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#334155' }}
+                      <Link key={child.label} href={child.href}
+                        onClick={() => setDropdown(false)}
+                        style={{
+                          display: 'block', padding: '10px 14px',
+                          fontSize: 14, fontWeight: 500,
+                          color: '#334155', textDecoration: 'none',
+                          borderRadius: 10, transition: 'background 0.15s ease',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#fff3ee'; e.currentTarget.style.color = '#b72301' }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#334155' }}
                       >
                         {child.label}
                       </Link>
@@ -168,16 +176,39 @@ export default function Header() {
           }}>
             {navItems.map(item => (
               <div key={item.label}>
-                <Link href={item.href} onClick={() => setMobileOpen(false)} style={{
-                  display: 'block', padding: '13px 0',
-                  fontSize: 15, fontWeight: 500, color: '#334155',
-                  textDecoration: 'none',
-                  borderBottom: '1px solid #f1f5f9',
-                }}>
-                  {item.label}
-                </Link>
-                {item.children && item.children.map(child => (
-                  <Link key={child.label} href={child.href} onClick={() => setMobileOpen(false)} style={{
+                {item.children ? (
+                  // Parent with children — tap toggles sub-menu open/close
+                  <button
+                    onClick={() => setMobileSubOpen(!mobileSubOpen)}
+                    style={{
+                      width: '100%', background: 'none', border: 'none',
+                      cursor: 'pointer', textAlign: 'left',
+                      padding: '13px 0', fontSize: 15, fontWeight: 500, color: '#334155',
+                      borderBottom: '1px solid #f1f5f9',
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      fontFamily: 'inherit',
+                    }}
+                  >
+                    {item.label}
+                    <svg
+                      width="14" height="14" viewBox="0 0 12 12" fill="none"
+                      style={{ transform: mobileSubOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s ease' }}
+                    >
+                      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                ) : (
+                  <Link href={item.href} onClick={closeAllMobile} style={{
+                    display: 'block', padding: '13px 0',
+                    fontSize: 15, fontWeight: 500, color: '#334155',
+                    textDecoration: 'none',
+                    borderBottom: '1px solid #f1f5f9',
+                  }}>
+                    {item.label}
+                  </Link>
+                )}
+                {item.children && mobileSubOpen && item.children.map(child => (
+                  <Link key={child.label} href={child.href} onClick={closeAllMobile} style={{
                     display: 'block', padding: '10px 0 10px 16px',
                     fontSize: 13, fontWeight: 400, color: '#64748b',
                     textDecoration: 'none',
@@ -188,7 +219,7 @@ export default function Header() {
                 ))}
               </div>
             ))}
-            <Link href="/contact" onClick={() => setMobileOpen(false)} style={{
+            <Link href="/contact" onClick={closeAllMobile} style={{
               display: 'block', textAlign: 'center',
               background: '#b72301', color: '#ffffff',
               padding: '13px', borderRadius: 9999,
